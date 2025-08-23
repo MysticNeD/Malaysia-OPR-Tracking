@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ProbabilityCard } from '@/components/ProbabilityCard';
 import { MetricCard } from '@/components/MetricCard';
 import { MPCCountdown } from '@/components/MPCCountdown';
@@ -14,41 +14,22 @@ import {
 import dashboardBg from '@/assets/dashboard-bg.jpg';
 
 const Index = () => {
-  // 状态：用来存后端数据
-  const [probabilities, setProbabilities] = useState({
-    increase: 0,
-    decrease: 0,
-    hold: 0
-  });
-  const [currentOPR, setCurrentOPR] = useState<string>("--");
-
-  useEffect(() => {
-    fetch("http://localhost:8000/predict?next_only=true")
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.length > 0) {
-          const item = data[0];
-          setProbabilities({
-            increase: item.probabilities.increase * 100,
-            decrease: item.probabilities.decrease * 100,
-            hold: item.probabilities.hold * 100,
-          });
-          setCurrentOPR(item.predicted_opr + "%");
-        }
-      })
-      .catch(err => console.error("API fetch error:", err));
-  }, []);
+  // Mock data - in real implementation, this would come from your data sources
+  const probabilities = {
+    increase: 15.3,
+    decrease: 8.7,
+    hold: 76.0
+  };
 
   const metrics = [
     {
       title: 'Current OPR',
-      value: currentOPR,
-      change: 'Predicted',
+      value: '3.00%',
+      change: 'Unchanged since May 2023',
       changeType: 'neutral' as const,
       icon: Percent,
       description: 'Bank Negara Malaysia Official Policy Rate'
     },
-    // 👇其余几个指标暂时保留 mock（你后续也可以改成从后端来）
     {
       title: 'MYOR',
       value: '3.06%',
@@ -175,3 +156,4 @@ const Index = () => {
 };
 
 export default Index;
+
