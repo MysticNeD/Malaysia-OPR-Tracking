@@ -1,0 +1,44 @@
+{
+  "data": [
+    {
+      "year": 2016,
+      "date": "2016-01-21",
+      "change_in_opr": 0,
+      "new_opr_level": 3.25
+    },
+    {
+      "year": 2016,
+      "date": "2016-03-09",
+      "change_in_opr": 0,
+      "new_opr_level": 3.25
+    },
+    {
+      "year": 2016,
+      "date": "2016-05-19",
+      "change_in_opr": 0,
+      "new_opr_level": 3.25
+    },
+    {
+      "year": 2016,
+      "date": "2016-07-13",
+      "change_in_opr": -0.25,
+      "new_opr_level": 3
+    },
+    {
+      "year": 2016,
+      "date": "2016-09-07",
+      "change_in_opr": 0,
+      "new_opr_level": 3
+    },
+    {
+      "year": 2016,
+      "date": "2016-11-23",
+      "change_in_opr": 0,
+      "new_opr_level": 3
+    }
+  ],
+  "meta": {
+    "last_updated": "2025-07-09 15:02:15",
+    "total_result": 6
+  }
+}

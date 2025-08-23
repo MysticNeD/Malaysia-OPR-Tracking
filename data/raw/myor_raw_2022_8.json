@@ -1,0 +1,118 @@
+{
+  "data": [
+    {
+      "reference_date": "2022-08-01",
+      "reference_rate": "2.25",
+      "aggregate_volume": "31268.46"
+    },
+    {
+      "reference_date": "2022-08-02",
+      "reference_rate": "2.25",
+      "aggregate_volume": "28881.68"
+    },
+    {
+      "reference_date": "2022-08-03",
+      "reference_rate": "2.23",
+      "aggregate_volume": "29541.94"
+    },
+    {
+      "reference_date": "2022-08-04",
+      "reference_rate": "2.24",
+      "aggregate_volume": "30800.25"
+    },
+    {
+      "reference_date": "2022-08-05",
+      "reference_rate": "2.25",
+      "aggregate_volume": "25780.55"
+    },
+    {
+      "reference_date": "2022-08-08",
+      "reference_rate": "2.25",
+      "aggregate_volume": "23796.61"
+    },
+    {
+      "reference_date": "2022-08-09",
+      "reference_rate": "2.24",
+      "aggregate_volume": "22607.29"
+    },
+    {
+      "reference_date": "2022-08-10",
+      "reference_rate": "2.22",
+      "aggregate_volume": "23166.46"
+    },
+    {
+      "reference_date": "2022-08-11",
+      "reference_rate": "2.24",
+      "aggregate_volume": "19891.96"
+    },
+    {
+      "reference_date": "2022-08-12",
+      "reference_rate": "2.25",
+      "aggregate_volume": "20701.03"
+    },
+    {
+      "reference_date": "2022-08-15",
+      "reference_rate": "2.21",
+      "aggregate_volume": "20724.44"
+    },
+    {
+      "reference_date": "2022-08-16",
+      "reference_rate": "2.25",
+      "aggregate_volume": "19949.70"
+    },
+    {
+      "reference_date": "2022-08-17",
+      "reference_rate": "2.23",
+      "aggregate_volume": "21778.42"
+    },
+    {
+      "reference_date": "2022-08-18",
+      "reference_rate": "2.25",
+      "aggregate_volume": "21581.05"
+    },
+    {
+      "reference_date": "2022-08-19",
+      "reference_rate": "2.21",
+      "aggregate_volume": "23368.19"
+    },
+    {
+      "reference_date": "2022-08-22",
+      "reference_rate": "2.25",
+      "aggregate_volume": "23064.65"
+    },
+    {
+      "reference_date": "2022-08-23",
+      "reference_rate": "2.25",
+      "aggregate_volume": "24887.29"
+    },
+    {
+      "reference_date": "2022-08-24",
+      "reference_rate": "2.22",
+      "aggregate_volume": "26379.91"
+    },
+    {
+      "reference_date": "2022-08-25",
+      "reference_rate": "2.22",
+      "aggregate_volume": "28040.73"
+    },
+    {
+      "reference_date": "2022-08-26",
+      "reference_rate": "2.22",
+      "aggregate_volume": "28632.43"
+    },
+    {
+      "reference_date": "2022-08-29",
+      "reference_rate": "2.22",
+      "aggregate_volume": "29204.31"
+    },
+    {
+      "reference_date": "2022-08-30",
+      "reference_rate": "2.24",
+      "aggregate_volume": "33122.32"
+    }
+  ],
+  "meta": {
+    "last_updated": "2025-08-22 11:01:06",
+    "total_result": 22
+  }
+}

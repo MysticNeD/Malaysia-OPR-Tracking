@@ -1,0 +1,158 @@
+import React from 'react';
+import { ProbabilityCard } from '@/components/ProbabilityCard';
+import { MetricCard } from '@/components/MetricCard';
+import { MPCCountdown } from '@/components/MPCCountdown';
+import { OPRChart } from '@/components/OPRChart';
+import { 
+  Percent, 
+  TrendingUp, 
+  DollarSign, 
+  Activity,
+  Building2,
+  Globe
+} from 'lucide-react';
+import dashboardBg from '@/assets/dashboard-bg.jpg';
+
+const Index = () => {
+  // Mock data - in real implementation, this would come from your data sources
+  const probabilities = {
+    increase: 15.3,
+    decrease: 8.7,
+    hold: 76.0
+  };
+
+  const metrics = [
+    {
+      title: 'Current OPR',
+      value: '3.00%',
+      change: 'Unchanged since May 2023',
+      changeType: 'neutral' as const,
+      icon: Percent,
+      description: 'Bank Negara Malaysia Official Policy Rate'
+    },
+    {
+      title: 'MYOR',
+      value: '3.06%',
+      change: '+0.02% vs Previous',
+      changeType: 'positive' as const,
+      icon: TrendingUp,
+      description: 'Malaysia Overnight Rate'
+    },
+    {
+      title: 'KLIBOR 1M',
+      value: '3.38%',
+      change: '+0.03% vs Previous',
+      changeType: 'positive' as const,
+      icon: Activity,
+      description: 'Kuala Lumpur Interbank Offered Rate'
+    },
+    {
+      title: 'USD/MYR',
+      value: '4.482',
+      change: '-0.8% vs Previous Month',
+      changeType: 'negative' as const,
+      icon: DollarSign,
+      description: 'Malaysian Ringgit Exchange Rate'
+    },
+    {
+      title: 'CPI Inflation',
+      value: '1.8%',
+      change: '+0.1% vs Previous Month',
+      changeType: 'positive' as const,
+      icon: Globe,
+      description: 'Annual Consumer Price Index'
+    },
+    {
+      title: 'SRR',
+      value: '2.00%',
+      change: 'Unchanged',
+      changeType: 'neutral' as const,
+      icon: Building2,
+      description: 'Statutory Reserve Requirement'
+    }
+  ];
+
+  return (
+    <div 
+      className="min-h-screen bg-background relative"
+      style={{
+        backgroundImage: `linear-gradient(rgba(34, 37, 61, 0.8), rgba(34, 37, 61, 0.9)), url(${dashboardBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 bg-gradient-primary bg-clip-text text-transparent">
+            Malaysia OPR Rate Tracker
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Real-time analysis and predictions for Bank Negara Malaysia's Monetary Policy Committee decisions
+          </p>
+        </div>
+
+        {/* MPC Countdown */}
+        <div className="mb-8">
+          <MPCCountdown />
+        </div>
+
+        {/* Probability Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <ProbabilityCard
+            type="increase"
+            probability={probabilities.increase}
+            title="Rate Increase"
+            change="+0.25% Expected"
+          />
+          <ProbabilityCard
+            type="hold"
+            probability={probabilities.hold}
+            title="Rate Hold"
+            change="Maintain Current"
+          />
+          <ProbabilityCard
+            type="decrease"
+            probability={probabilities.decrease}
+            title="Rate Decrease"
+            change="-0.25% Expected"
+          />
+        </div>
+
+        {/* Metrics Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {metrics.map((metric, index) => (
+            <MetricCard
+              key={index}
+              title={metric.title}
+              value={metric.value}
+              change={metric.change}
+              changeType={metric.changeType}
+              icon={metric.icon}
+              description={metric.description}
+            />
+          ))}
+        </div>
+
+        {/* Historical Chart */}
+        <div className="mb-8">
+          <OPRChart />
+        </div>
+
+        {/* Footer */}
+        <div className="text-center">
+          <p className="text-sm text-muted-foreground">
+            Data sourced from Bank Negara Malaysia (BNM) and financial markets. 
+            This tool is for educational and research purposes only.
+          </p>
+          <p className="text-xs text-muted-foreground mt-2">
+            Last updated: {new Date().toLocaleString('en-MY')}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Index;
