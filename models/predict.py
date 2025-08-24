@@ -47,26 +47,17 @@ def read_csv_if_exists(name):
 clf = None
 features = None
 
-def load_model():
-    global clf, features
-    import joblib
-    MODEL_DIR = Path(__file__).resolve().parent
-    model_path = MODEL_DIR / "model.pkl"
-    if not model_path.exists():
-        raise FileNotFoundError(f"{model_path} not found. Please train the model first.")
-    model_bundle = joblib.load(model_path)
-    clf = model_bundle["model"]
-    features = model_bundle["features"]
-
-def predict_opr(pred_date: str):
-    global clf, features
-    if clf is None or features is None:
-        load_model()
-    from datetime import datetime
-    X_pred = generate_features(datetime.strptime(pred_date, "%Y-%m-%d").date())
-    label = clf.predict(X_pred)[0]
-    proba = clf.predict_proba(X_pred)[0]
-    return label, dict(zip(clf.classes_, proba))
+def _load_model():
+    global _model_bundle, _clf, _features
+    if _model_bundle is None:
+        from pathlib import Path
+        import joblib
+        ROOT = Path(__file__).resolve().parent.parent
+        MODEL_DIR = (ROOT / "models").resolve()
+        _model_bundle = joblib.load(MODEL_DIR / "model.pkl")
+        _clf = _model_bundle["model"]
+        _features = _model_bundle["features"]
+    return _clf, _features
 
 
 # ------------------------
@@ -184,8 +175,8 @@ def generate_features(pred_date: date, lookback_days=7):
 # Predict
 # ------------------------
 def predict_opr(pred_date: str):
-    pred_date_obj = datetime.strptime(pred_date, "%Y-%m-%d").date()
-    X_pred = generate_features(pred_date_obj)
+    clf, features = _load_model()
+    X_pred = generate_features(pred_date, features)
     label = clf.predict(X_pred)[0]
     proba = clf.predict_proba(X_pred)[0]
     return label, dict(zip(clf.classes_, proba))
