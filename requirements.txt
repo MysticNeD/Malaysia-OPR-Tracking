@@ -6,5 +6,8 @@ numpy
 scikit-learn
 requests
 pathlib
+imbalanced-learn
+joblib
+matplotlib
 
 
