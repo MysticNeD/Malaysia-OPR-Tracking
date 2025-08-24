@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import dashboardBg from '@/assets/dashboard-bg.jpg';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 const Index = () => {
   // 状态：用来存后端数据
   const [probabilities, setProbabilities] = useState({
@@ -30,7 +31,7 @@ const Index = () => {
   const [ib_vol, setIbVol] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/predict?next_only=true")
+    fetch(`${API_BASE_URL}/predict?next_only=true`)
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
@@ -48,7 +49,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/data/oprs")
+    fetch(`${API_BASE_URL}/data/oprs`)
       .then(res => res.json())
       .then(data => {
         console.log("✅ API raw data:", data);   // 👈 先打印出来看看
@@ -63,7 +64,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/data/myor")
+    fetch(`${API_BASE_URL}/data/myor`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
@@ -77,7 +78,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/data/interbank_rates")
+    fetch(`${API_BASE_URL}/data/interbank_rates`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
@@ -91,7 +92,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/data/interbank_volumes")
+    fetch(`${API_BASE_URL}/data/interbank_volumes`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
