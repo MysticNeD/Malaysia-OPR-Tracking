@@ -1,6 +1,7 @@
 # uvicorn app:app --host 0.0.0.0 --port 8000
 
 from fastapi import FastAPI, Depends
+from fastapi.responses import JSONResponse
 from utils.security import verify_credentials
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
