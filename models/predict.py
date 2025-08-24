@@ -41,9 +41,33 @@ def read_csv_if_exists(name):
 # ------------------------
 # Load trained model
 # ------------------------
-model_bundle = joblib.load(MODEL_DIR / "model.pkl")
-clf = model_bundle["model"]
-features = model_bundle["features"]
+# ------------------------
+# 延迟加载模型
+# ------------------------
+clf = None
+features = None
+
+def load_model():
+    global clf, features
+    import joblib
+    MODEL_DIR = Path(__file__).resolve().parent
+    model_path = MODEL_DIR / "model.pkl"
+    if not model_path.exists():
+        raise FileNotFoundError(f"{model_path} not found. Please train the model first.")
+    model_bundle = joblib.load(model_path)
+    clf = model_bundle["model"]
+    features = model_bundle["features"]
+
+def predict_opr(pred_date: str):
+    global clf, features
+    if clf is None or features is None:
+        load_model()
+    from datetime import datetime
+    X_pred = generate_features(datetime.strptime(pred_date, "%Y-%m-%d").date())
+    label = clf.predict(X_pred)[0]
+    proba = clf.predict_proba(X_pred)[0]
+    return label, dict(zip(clf.classes_, proba))
+
 
 # ------------------------
 # Load historical data
