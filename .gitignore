@@ -33,3 +33,13 @@ __pycache__/
 data/*.db
 models/model.pkl
 
+__pycache__/
+*.pyc
+data/
+logs/
+models/model.pkl
+models/metrics.txt
+outputs/
+*.lockb
+components.json
+
