@@ -2,9 +2,9 @@
 """
 Run full pipeline for myopr-watch:
 1. Fetch latest BNM data
-2. (Optional) retrain model
+2. Train model
 3. Predict future OPR decisions
-4. Save results and optionally visualize
+4. Save results
 """
 
 from pathlib import Path
@@ -13,7 +13,7 @@ import pandas as pd
 import json
 import sys
 
-# -------------- 配置路径 --------------
+# ------------------ 配置路径 ------------------
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = (ROOT / "data").resolve()
 MODEL_DIR = (ROOT / "models").resolve()
@@ -21,33 +21,31 @@ OUTPUT_DIR = (ROOT / "outputs").resolve()
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ------------------ 导入模块 ------------------
-from scripts.fetch_bnm import main as fetch_bnm_main  # 运行 fetch_bnm.py
-from models.predict import predict_opr  # 预测函数
-
-# ------------------ 未来 OPR 决策日 ------------------
-# 可以放全年 OPR 日期
-OPR_DECISIONS = [
-    "2025-01-22", "2025-03-06", "2025-05-08", "2025-07-09", 
-    "2025-09-04", "2025-11-06"
-]
-
-# ------------------ 清理已经过去的日期 ------------------
-today = datetime.now().date()
-OPR_DECISIONS = [d for d in OPR_DECISIONS if datetime.strptime(d, "%Y-%m-%d").date() >= today]
+from scripts.fetch_bnm import main as fetch_bnm_main  # 更新 opr/myor/interbank 数据
+from models.train import prepare_dataset  # 训练函数
+from models.predict import predict_opr, OPR_DECISIONS  # 预测函数
 
 # ------------------ 主流程 ------------------
 def main():
     print("[info] Fetching latest BNM data...")
     try:
-        fetch_bnm_main()  # 自动更新 opr/myor/interbank 数据
+        fetch_bnm_main()
     except Exception as e:
         print("[error] fetch_bnm failed:", e, file=sys.stderr)
 
-    # ------------------ 预测未来 OPR ------------------
-    print("[info] Predicting for next OPR decision dates...")
-    predictions = []
+    print("[info] Training model...")
+    try:
+        model_bundle, prepared = prepare_dataset()
+    except Exception as e:
+        print("[error] training failed:", e, file=sys.stderr)
+        return
 
-    for fd in OPR_DECISIONS:
+    print("[info] Predicting next OPR decision dates...")
+    today = datetime.now().date()
+    upcoming_dates = [d for d in OPR_DECISIONS if datetime.strptime(d, "%Y-%m-%d").date() >= today]
+
+    predictions = []
+    for fd in upcoming_dates:
         try:
             label, proba = predict_opr(fd)
             proba = {k: float(v) for k, v in proba.items()}
@@ -60,14 +58,13 @@ def main():
         except Exception as e:
             print(f"[error] failed to predict for {fd}: {e}", file=sys.stderr)
 
-    # ------------------ 保存 CSV ------------------
+    # 保存 CSV
     if predictions:
-        df_pred = pd.DataFrame(predictions)
         out_csv = DATA_DIR / "predictions.csv"
-        df_pred.to_csv(out_csv, index=False, encoding="utf-8")
-        print(f"[info] Saved predictions CSV: {out_csv} ({len(df_pred)} rows)")
+        pd.DataFrame(predictions).to_csv(out_csv, index=False, encoding="utf-8")
+        print(f"[info] Saved predictions CSV: {out_csv}")
 
-    # ------------------ 保存 JSON ------------------
+    # 保存 JSON
     out_json = DATA_DIR / "predictions.json"
     with open(out_json, "w", encoding="utf-8") as f:
         json.dump(predictions, f, ensure_ascii=False, indent=2)
