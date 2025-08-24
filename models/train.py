@@ -161,6 +161,12 @@ def prepare_dataset():
             else:
                 feat["myor_mean_7d"] = np.nan
                 feat["myor_last"] = np.nan
+            if not window.empty and "aggregate_volume" in window.columns:
+                feat["myor_vol_mean_7d"] = window["aggregate_volume"].mean()
+                feat["myor_vol_last"] = window["aggregate_volume"].iloc[-1]
+            else:
+                feat["myor_vol_mean_7d"] = np.nan
+                feat["myor_vol_last"] = np.nan
         else:
             feat["myor_mean_7d"] = np.nan
             feat["myor_last"] = np.nan
@@ -206,7 +212,7 @@ def prepare_dataset():
 
     # features list
     features = ["myor_mean_7d", "myor_last", "overnight_mean_7d", "overnight_last", 
-                "m1_mean_7d", "vol_mean_7d", "vol_sum_7d", "myor_minus_opr"]
+                "m1_mean_7d", "vol_mean_7d", "vol_sum_7d", "myor_minus_opr","myor_vol_mean_7d", "myor_vol_last" ]
     
     # --- 新增差分特征 ---
     Xdf["myor_diff"] = Xdf["myor_last"] - Xdf["myor_mean_7d"]

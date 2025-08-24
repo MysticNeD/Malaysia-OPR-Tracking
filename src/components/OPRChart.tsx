@@ -1,93 +1,117 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card } from '@/components/ui/card';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  ComposedChart,
+  Line,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from 'recharts';
 
-const historicalData = [
-  { date: '2023-01', opr: 2.75, myor: 2.73, klibor1m: 2.85 },
-  { date: '2023-03', opr: 3.00, myor: 2.98, klibor1m: 3.10 },
-  { date: '2023-05', opr: 3.00, myor: 2.99, klibor1m: 3.15 },
-  { date: '2023-07', opr: 3.00, myor: 3.01, klibor1m: 3.20 },
-  { date: '2023-09', opr: 3.00, myor: 3.02, klibor1m: 3.18 },
-  { date: '2023-11', opr: 3.00, myor: 3.00, klibor1m: 3.22 },
-  { date: '2024-01', opr: 3.00, myor: 3.01, klibor1m: 3.25 },
-  { date: '2024-03', opr: 3.00, myor: 3.02, klibor1m: 3.28 },
-  { date: '2024-05', opr: 3.00, myor: 3.03, klibor1m: 3.30 },
-  { date: '2024-07', opr: 3.00, myor: 3.04, klibor1m: 3.32 },
-  { date: '2024-09', opr: 3.00, myor: 3.05, klibor1m: 3.35 },
-  { date: '2024-11', opr: 3.00, myor: 3.06, klibor1m: 3.38 },
-];
+export interface ChartDataItem {
+  date: string;           // YYYY-MM-DD
+  opr: number;
+  interbank_rate: number;
+  myor_volume: number;
+  interbank_volume: number;
+}
 
-export const OPRChart: React.FC = () => {
+interface OPRChartProps {
+  oprs: any[];            // 後端 oprs 數組
+  myor_volumes: any[];    // 後端 myor volumes
+  interbank_rates: any[];  // 後端 interbank rates
+  interbank_volumes: any[]; // 後端 interbank volumes
+}
+
+export const OPRChart: React.FC<OPRChartProps> = ({
+  oprs,
+  myor_volumes,
+  interbank_rates,
+  interbank_volumes,
+}) => {
+  // 生成过去 12 个月的日期（每月同日）
+  const chartData = useMemo(() => {
+    const result: ChartDataItem[] = [];
+    const today = new Date();
+    for (let i = 0; i < 12; i++) {
+      const d = new Date(today.getFullYear(), today.getMonth() - i, today.getDate());
+      const dateStr = d.toISOString().split('T')[0]; // YYYY-MM-DD
+
+      // 找对应日期的数据
+      const oprItem = oprs.find((o) => o.date === dateStr);
+      const myorItem = myor_volumes.find((m) => m.date === dateStr);
+      const ibRateItem = interbank_rates.find((r) => r.date === dateStr && r.tenor === 'overnight');
+      const ibVolItem = interbank_volumes.find((v) => v.date === dateStr);
+
+      result.push({
+        date: dateStr,
+        opr: oprItem?.new_opr_level ?? 0,
+        myor_volume: myorItem?.aggregate_volume ?? 0,
+        interbank_rate: ibRateItem?.rate ?? 0,
+        interbank_volume: ibVolItem?.volume ?? 0,
+      });
+    }
+
+    // 逆序让时间从旧到新显示
+    return result.reverse();
+  }, [oprs, myor_volumes, interbank_rates, interbank_volumes]);
+
   return (
     <Card className="p-6 bg-gradient-card border-border shadow-card">
       <h3 className="text-xl font-bold text-foreground mb-6">
-        Historical Rates & Market Indicators
+        Past 12 Months Rates & Volumes
       </h3>
-      
+
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={historicalData}>
+          <ComposedChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-            <XAxis 
-              dataKey="date" 
+            <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+            
+            {/* 左轴：利率 */}
+            <YAxis
+              yAxisId="left"
+              stroke="hsl(var(--muted-foreground))"
+              fontSize={12}
+              domain={['auto', 'auto']}
+              tickFormatter={(value) => `${value.toFixed(2)}%`}
+            />
+            
+            {/* 右轴：volume */}
+            <YAxis
+              yAxisId="right"
+              orientation="right"
               stroke="hsl(var(--muted-foreground))"
               fontSize={12}
             />
-            <YAxis 
-              stroke="hsl(var(--muted-foreground))"
-              fontSize={12}
-              domain={['dataMin - 0.1', 'dataMax + 0.1']}
-            />
-            <Tooltip 
+
+            <Tooltip
+              formatter={(value: number, name: string) => {
+                if (name === 'opr' || name === 'interbank_rate') return [`${value.toFixed(2)}%`, name];
+                return [value.toLocaleString(), name]; // volume格式化
+              }}
               contentStyle={{
                 backgroundColor: 'hsl(var(--card))',
                 border: '1px solid hsl(var(--border))',
                 borderRadius: '8px',
-                color: 'hsl(var(--foreground))'
+                color: 'hsl(var(--foreground))',
               }}
-              formatter={(value: number, name: string) => [
-                `${value.toFixed(2)}%`,
-                name === 'opr' ? 'OPR' : name === 'myor' ? 'MYOR' : 'KLIBOR 1M'
-              ]}
             />
-            <Line 
-              type="monotone" 
-              dataKey="opr" 
-              stroke="hsl(var(--primary))" 
-              strokeWidth={3}
-              dot={{ fill: 'hsl(var(--primary))', r: 4 }}
-            />
-            <Line 
-              type="monotone" 
-              dataKey="myor" 
-              stroke="hsl(var(--financial-green))" 
-              strokeWidth={2}
-              dot={{ fill: 'hsl(var(--financial-green))', r: 3 }}
-            />
-            <Line 
-              type="monotone" 
-              dataKey="klibor1m" 
-              stroke="hsl(var(--financial-orange))" 
-              strokeWidth={2}
-              dot={{ fill: 'hsl(var(--financial-orange))', r: 3 }}
-            />
-          </LineChart>
+            <Legend />
+
+            {/* 折线：利率 */}
+            <Line yAxisId="left" type="monotone" dataKey="opr" stroke="hsl(var(--primary))" strokeWidth={3} dot={{ r: 3 }} name="OPR" />
+            <Line yAxisId="left" type="monotone" dataKey="interbank_rate" stroke="hsl(var(--financial-green))" strokeWidth={2} dot={{ r: 2 }} name="Interbank Rate" />
+
+            {/* 柱状：Volume */}
+            <Bar yAxisId="right" dataKey="myor_volume" fill="hsl(var(--financial-orange))" name="MYOR Volume" barSize={20} />
+            <Bar yAxisId="right" dataKey="interbank_volume" fill="hsl(var(--muted-foreground))" name="Interbank Volume" barSize={20} />
+          </ComposedChart>
         </ResponsiveContainer>
-      </div>
-      
-      <div className="flex justify-center space-x-6 mt-4">
-        <div className="flex items-center space-x-2">
-          <div className="w-4 h-4 bg-primary rounded-full"></div>
-          <span className="text-sm text-foreground">OPR</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="w-4 h-4 bg-financial-green rounded-full"></div>
-          <span className="text-sm text-foreground">MYOR</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="w-4 h-4 bg-financial-orange rounded-full"></div>
-          <span className="text-sm text-foreground">KLIBOR 1M</span>
-        </div>
       </div>
     </Card>
   );

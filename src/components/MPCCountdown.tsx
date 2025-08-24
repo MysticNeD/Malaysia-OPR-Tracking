@@ -11,7 +11,7 @@ export const MPCCountdown: React.FC = () => {
   });
 
   // Next MPC meeting date (example: January 24, 2025)
-  const nextMPCDate = new Date('2025-01-24T09:00:00+08:00');
+  const nextMPCDate = new Date('2025-09-04T15:00:00+08:00'); // Adjust to your timezone
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -34,14 +34,14 @@ export const MPCCountdown: React.FC = () => {
   return (
     <Card className="p-6 bg-gradient-primary border-border shadow-glow">
       <div className="flex items-center space-x-3 mb-4">
-        <Calendar className="h-6 w-6 text-primary-foreground" />
-        <h3 className="text-xl font-bold text-primary-foreground">
-          Next MPC Meeting
+        <Calendar className="h-6 w-6 text-white-1000" />
+        <h3 className="text-xl font-bold text-white-1000">
+          Next OPR Release
         </h3>
       </div>
       
       <div className="text-center">
-        <div className="text-lg text-primary-foreground mb-2">
+        <div className="text-lg text-white-1000">
           {nextMPCDate.toLocaleDateString('en-MY', {
             weekday: 'long',
             year: 'numeric',
@@ -52,28 +52,28 @@ export const MPCCountdown: React.FC = () => {
         
         <div className="grid grid-cols-4 gap-4 mt-4">
           <div className="text-center">
-            <div className="text-3xl font-bold text-primary-foreground">
+            <div className="text-3xl font-bold text-white-1000">
               {timeLeft.days}
             </div>
-            <div className="text-sm text-primary-foreground/80">Days</div>
+            <div className="text-sm text-white-1000">Days</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-primary-foreground">
+            <div className="text-3xl font-bold text-white-1000">
               {timeLeft.hours}
             </div>
-            <div className="text-sm text-primary-foreground/80">Hours</div>
+            <div className="text-sm text-white-1000">Hours</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-primary-foreground">
+            <div className="text-3xl font-bold text-white-1000">
               {timeLeft.minutes}
             </div>
-            <div className="text-sm text-primary-foreground/80">Minutes</div>
+            <div className="text-sm text-white-1000">Minutes</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-primary-foreground">
+            <div className="text-3xl font-bold text-white-1000">
               {timeLeft.seconds}
             </div>
-            <div className="text-sm text-primary-foreground/80">Seconds</div>
+            <div className="text-sm text-white-1000">Seconds</div>
           </div>
         </div>
       </div>

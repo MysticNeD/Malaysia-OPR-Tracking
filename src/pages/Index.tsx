@@ -1,8 +1,11 @@
+//Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+// npm run dev
 import React, { useEffect, useState } from 'react';
 import { ProbabilityCard } from '@/components/ProbabilityCard';
 import { MetricCard } from '@/components/MetricCard';
 import { MPCCountdown } from '@/components/MPCCountdown';
 import { OPRChart } from '@/components/OPRChart';
+import PredictTable from '@/components/PredictTable';
 import { 
   Percent, 
   TrendingUp, 
@@ -21,6 +24,10 @@ const Index = () => {
     hold: 0
   });
   const [currentOPR, setCurrentOPR] = useState<string>("--");
+  const [oprs, setOprs] = useState<any[]>([]);
+  const [myor_vol, setMyorVol] = useState<any[]>([]);
+  const [ib_rate, setIbRate] = useState<any[]>([]);
+  const [ib_vol, setIbVol] = useState<any[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:8000/predict?next_only=true")
@@ -29,67 +36,139 @@ const Index = () => {
         if (data && data.length > 0) {
           const item = data[0];
           setProbabilities({
-            increase: item.probabilities.increase * 100,
-            decrease: item.probabilities.decrease * 100,
-            hold: item.probabilities.hold * 100,
+            increase: item.probabilities.up * 100,
+            hold: item.probabilities.same * 100,
+            decrease: item.probabilities.down * 100,
           });
+
           setCurrentOPR(item.predicted_opr + "%");
         }
       })
       .catch(err => console.error("API fetch error:", err));
   }, []);
 
+  useEffect(() => {
+    fetch("http://localhost:8000/data/oprs")
+      .then(res => res.json())
+      .then(data => {
+        console.log("✅ API raw data:", data);   // 👈 先打印出来看看
+        if (Array.isArray(data) && data.length > 0) {
+          console.log("👉 Latest OPR:", data[data.length - 1]); // 打印最后一个
+          setOprs(data);  
+        } else {
+          console.warn("⚠️ API 返回的不是数组或者为空:", data);
+        }
+      })
+      .catch(err => console.error("API fetch error (oprs):", err));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/data/myor")
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          console.log("👉 Latest OPR:", data[data.length - 1]); // 打印最后一个
+          setMyorVol(data);  
+        } else {
+          console.warn("⚠️ API 返回的不是数组或者为空:", data);
+        }
+      })
+      .catch(err => console.error("API fetch error (oprs):", err));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/data/interbank_rates")
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          console.log("👉 Latest IBR:", data[data.length - 1]); // 打印最后一个
+          setIbRate(data);  
+        } else {
+          console.warn("⚠️ API 返回的不是数组或者为空:", data);
+        }
+      })
+      .catch(err => console.error("API fetch error (oprs):", err));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/data/interbank_volumes")
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          console.log("👉 Latest IBV:", data[data.length - 1]); // 打印最后一个
+          setIbVol(data);  
+        } else {
+          console.warn("⚠️ API 返回的不是数组或者为空:", data);
+        }
+      })
+      .catch(err => console.error("API fetch error (oprs):", err));
+  }, []);
+
+  const latestOpr = oprs[oprs.length - 1];
+  const latestMyorVol = myor_vol[myor_vol.length - 1];
+  const latestIbRate = ib_rate.find(item => item.tenor === 'overnight');
+  const latestIbVol = ib_vol.find(item => item.tenor === 'overnight');
+
   const metrics = [
     {
       title: 'Current OPR',
-      value: currentOPR,
+      value: latestOpr ? `${latestOpr.new_opr_level}%` : "--",
       change: 'Predicted',
       changeType: 'neutral' as const,
       icon: Percent,
       description: 'Bank Negara Malaysia Official Policy Rate'
     },
-    // 👇其余几个指标暂时保留 mock（你后续也可以改成从后端来）
+
     {
-      title: 'MYOR',
-      value: '3.06%',
-      change: '+0.02% vs Previous',
+      title: 'MYOR Aggrerate Volume',
+      value: latestMyorVol ? `${latestMyorVol.aggregate_volume}` : "--",
+      change: 'Updated Every day',
       changeType: 'positive' as const,
       icon: TrendingUp,
       description: 'Malaysia Overnight Rate'
     },
     {
-      title: 'KLIBOR 1M',
-      value: '3.38%',
-      change: '+0.03% vs Previous',
+      title: 'Kuala Lumpur Interbank - Rate',
+      value: latestIbRate ?.tenor === "overnight" ? `${latestIbRate.rate}` : "--",
+      change: 'Updated every day',
       changeType: 'positive' as const,
       icon: Activity,
       description: 'Kuala Lumpur Interbank Offered Rate'
     },
     {
-      title: 'USD/MYR',
-      value: '4.482',
-      change: '-0.8% vs Previous Month',
+      title: 'Kuala Lumpur Interbank - Volume',
+      value: latestIbVol ?.tenor === "overnight" ? `${latestIbVol.volume}` : "--",
+      change: 'Updated every day',
       changeType: 'negative' as const,
-      icon: DollarSign,
-      description: 'Malaysian Ringgit Exchange Rate'
-    },
-    {
-      title: 'CPI Inflation',
-      value: '1.8%',
-      change: '+0.1% vs Previous Month',
-      changeType: 'positive' as const,
-      icon: Globe,
-      description: 'Annual Consumer Price Index'
-    },
-    {
-      title: 'SRR',
-      value: '2.00%',
-      change: 'Unchanged',
-      changeType: 'neutral' as const,
-      icon: Building2,
-      description: 'Statutory Reserve Requirement'
+      icon: Activity,
+      description: 'Kuala Lumpur Interbank Daily Volume'
     }
   ];
+
+interface ChartDataItem {
+    date: string;
+    opr: number;
+    myor_volume: number;
+    interbank_rate: number;
+    interbank_volume: number;
+  }
+
+  const chartData: ChartDataItem[] = oprs.map(oprItem => {
+    const myorItem = myor_vol.find(item => item.date === oprItem.date);
+    const ibRateItem = ib_rate.find(item => item.date === oprItem.date && item.tenor === 'overnight');
+    const ibVolItem = ib_vol.find(item => item.date === oprItem.date);
+
+    return {
+      date: oprItem.date,
+      opr: oprItem.new_opr_level,
+      myor_volume: myorItem?.aggregate_volume ?? 0,
+      interbank_rate: ibRateItem?.rate ?? 0,
+      interbank_volume: ibVolItem?.volume ?? 0
+    };
+  });
+
+
+
 
   return (
     <div 
@@ -104,7 +183,7 @@ const Index = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 bg-gradient-primary bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl font-bold text-white 200 mb-4 bg-gradient-primary bg-clip-text">
             Malaysia OPR Rate Tracker
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -153,17 +232,22 @@ const Index = () => {
             />
           ))}
         </div>
-
         {/* Historical Chart */}
+    
+
+        {/* Prediction Table */}
         <div className="mb-8">
-          <OPRChart />
+          <PredictTable />
         </div>
 
         {/* Footer */}
         <div className="text-center">
           <p className="text-sm text-muted-foreground">
-            Data sourced from Bank Negara Malaysia (BNM) and financial markets. 
-            This tool is for educational and research purposes only.
+            Disclaimer: This is only a demo project and for educational purposes only.
+            This is not a financial advice and should not be used for any research or trading decisions.
+          </p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Created by Wei Zhe (Bryan) Chong @ 2025
           </p>
           <p className="text-xs text-muted-foreground mt-2">
             Last updated: {new Date().toLocaleString('en-MY')}
