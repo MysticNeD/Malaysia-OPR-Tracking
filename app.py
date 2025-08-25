@@ -19,7 +19,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # 如果会用前端（Vite 默认 5173）访问后端，请保留 CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://malaysia-opr-tracking.onrender.com/",
+    allow_origins=[
+                   "https://malaysia-opr-tracking.vercel.app/"
                    "13.228.225.19",
                     "18.142.128.26",
                     "54.254.162.138"],

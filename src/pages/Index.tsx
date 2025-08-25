@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import dashboardBg from '@/assets/dashboard-bg.jpg';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_BASE_URL = import.meta.env.BACKEND_API_KEY || "http://localhost:8000";
 const Index = () => {
   // 状态：用来存后端数据
   const [probabilities, setProbabilities] = useState({
