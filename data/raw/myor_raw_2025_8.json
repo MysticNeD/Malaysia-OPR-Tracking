@@ -74,10 +74,15 @@
       "reference_date": "2025-08-21",
       "reference_rate": "2.75",
       "aggregate_volume": "22581.96"
+    },
+    {
+      "reference_date": "2025-08-22",
+      "reference_rate": "2.75",
+      "aggregate_volume": "27166.69"
     }
   ],
   "meta": {
-    "last_updated": "2025-08-22 11:01:06",
-    "total_result": 15
+    "last_updated": "2025-08-25 11:01:05",
+    "total_result": 16
   }
 }

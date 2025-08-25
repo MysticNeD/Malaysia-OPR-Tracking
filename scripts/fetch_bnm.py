@@ -55,16 +55,20 @@ def _dump_raw(name: str, obj: Any):
     print(f"Saved raw JSON: {fp}")
 
 def _write_csv(df: pd.DataFrame, outfile: Path):
-    df.to_csv(outfile, index=False, encoding="utf-8")
+    df_out = df.copy()
+    if "date" in df_out.columns:
+        df_out["date"] = pd.to_datetime(df_out["date"]).dt.strftime("%Y-%m-%d")
+    df_out.to_csv(outfile, index=False, encoding="utf-8")
+
 
 def _normalize_date(s: Any) -> Any:
-    # 尝试把各种日期字段规范成 YYYY-MM-DD
     if s is None:
         return None
     try:
-        return pd.to_datetime(s).date().isoformat()
+        return pd.to_datetime(s)  # 统一成 pandas Timestamp
     except Exception:
         return s
+
 
 def iter_years(n_years: int = 1):
     """
@@ -158,7 +162,7 @@ def fetch_opr(lookback_years: int = 1) -> pd.DataFrame:
                 raise ValueError("existing oprs.csv 没有 'date' 列")
 
             # --- 解析 date ---
-            existing["date"] = pd.to_datetime(existing["date"], errors="coerce").dt.date
+            existing["date"] = pd.to_datetime(existing["date"], errors="coerce")
 
             # --- 合并 ---
             combined = pd.concat([existing, df_api], ignore_index=True, sort=False)
