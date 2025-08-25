@@ -16,7 +16,16 @@ import {
 } from 'lucide-react';
 import dashboardBg from '@/assets/dashboard-bg.jpg';
 
-const API_BASE_URL = import.meta.env.VITE_DATA_THE_API_ABCDE || "http://localhost:8000";
+function escapeHtml(unsafe: string) {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
 const Index = () => {
   // 状态：用来存后端数据
   const [probabilities, setProbabilities] = useState({
@@ -31,7 +40,7 @@ const Index = () => {
   const [ib_vol, setIbVol] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/predict`)
+    fetch("/api/predict")
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
@@ -49,7 +58,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/data/oprs`)
+    fetch("/api/data/oprs")
       .then(res => res.json())
       .then(data => {
         console.log("✅ API raw data:", data);   // 👈 先打印出来看看
@@ -64,7 +73,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/data/myor`)
+    fetch("/api/data/myor")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
@@ -78,7 +87,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/data/interbank_rates`)
+    fetch("/api/data/interbank_rates")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
@@ -92,7 +101,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/data/interbank_volumes`)
+    fetch("/api/data/interbank_volumes")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
@@ -113,7 +122,7 @@ const Index = () => {
   const metrics = [
     {
       title: 'Current OPR',
-      value: latestOpr ? `${latestOpr.new_opr_level}%` : "--",
+      value: latestOpr ? `${escapeHtml(String(latestOpr.new_opr_level))}%` : "--",
       change: ' ',
       changeType: 'neutral' as const,
       icon: Percent,
@@ -122,7 +131,7 @@ const Index = () => {
 
     {
       title: 'MYOR Aggrerate Volume',
-      value: latestMyorVol ? `${latestMyorVol.aggregate_volume}` : "--",
+      value: latestMyorVol ? `${escapeHtml(String(latestMyorVol.aggregate_volume))}` : "--",
       change: 'Updated Every day',
       changeType: 'positive' as const,
       icon: TrendingUp,
@@ -130,7 +139,7 @@ const Index = () => {
     },
     {
       title: 'Kuala Lumpur Interbank - Rate',
-      value: latestIbRate ?.tenor === "overnight" ? `${latestIbRate.rate}` : "--",
+      value: latestIbRate ?.tenor === "overnight" ? `${escapeHtml(String(latestIbRate.rate))}` : "--",
       change: 'Updated every day',
       changeType: 'positive' as const,
       icon: Activity,
@@ -138,7 +147,7 @@ const Index = () => {
     },
     {
       title: 'Kuala Lumpur Interbank - Volume',
-      value: latestIbVol ?.tenor === "overnight" ? `${latestIbVol.volume}` : "--",
+      value: latestIbVol ?.tenor === "overnight" ? `${escapeHtml(String(latestIbVol.volume))}` : "--",
       change: 'Updated every day',
       changeType: 'negative' as const,
       icon: Activity,
@@ -189,7 +198,7 @@ interface ChartDataItem {
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             This website provides real-time Malaysia's Overnight Policy Rate and using financial metrics to predict the possibility of next OPR movement.
-            The current OPR is {latestOpr ? `${latestOpr.new_opr_level}%` : 'Loading...'}.
+            The current OPR is {latestOpr ? `${escapeHtml(String(latestOpr.new_opr_level))}%` : 'Loading...'}.
           </p>
 
           <p className="text-sm text-muted-foreground max-w-2xl mx-auto mt-4">
