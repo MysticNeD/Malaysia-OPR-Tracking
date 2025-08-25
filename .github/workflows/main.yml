@@ -44,10 +44,7 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add data/predictions.csv data/predictions.json
+          git add -f data/predictions.csv data/predictions.json
           git commit -m "Update predictions [skip ci]" || echo "No changes to commit"
           git push
 
-    # 7. 失败通知
-    # GitHub Actions 默认会在 Workflow fail 时发邮件到 repo watchers
-    # 如果需要邮件给特定邮箱，可以用 action： dawidd6/action-send-mail
