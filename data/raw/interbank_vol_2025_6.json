@@ -1,0 +1,199 @@
+{
+  "data": [
+    {
+      "date": "2025-06-03",
+      "overnight": 3797.16,
+      "1_week": 130,
+      "1_month": 50,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 595
+    },
+    {
+      "date": "2025-06-04",
+      "overnight": 3842.89,
+      "1_week": 105,
+      "1_month": 310,
+      "3_month": 760,
+      "6_month": null,
+      "1_year": null,
+      "other": 100
+    },
+    {
+      "date": "2025-06-05",
+      "overnight": 3240.71,
+      "1_week": 385,
+      "1_month": 400,
+      "3_month": 650,
+      "6_month": null,
+      "1_year": null,
+      "other": 2082.9
+    },
+    {
+      "date": "2025-06-06",
+      "overnight": 2267.55,
+      "1_week": 300,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 2500
+    },
+    {
+      "date": "2025-06-09",
+      "overnight": 2658.84,
+      "1_week": 50,
+      "1_month": 330,
+      "3_month": 200,
+      "6_month": 595,
+      "1_year": null,
+      "other": 1910
+    },
+    {
+      "date": "2025-06-10",
+      "overnight": 4064.96,
+      "1_week": 775,
+      "1_month": null,
+      "3_month": 355,
+      "6_month": 700,
+      "1_year": null,
+      "other": 1250
+    },
+    {
+      "date": "2025-06-11",
+      "overnight": 3294.34,
+      "1_week": 350,
+      "1_month": 200,
+      "3_month": 140,
+      "6_month": null,
+      "1_year": null,
+      "other": 920
+    },
+    {
+      "date": "2025-06-12",
+      "overnight": 4354.77,
+      "1_week": 100,
+      "1_month": 100,
+      "3_month": 100,
+      "6_month": null,
+      "1_year": null,
+      "other": 2711.62
+    },
+    {
+      "date": "2025-06-13",
+      "overnight": 4700.83,
+      "1_week": 150,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 1863.73
+    },
+    {
+      "date": "2025-06-16",
+      "overnight": 5108.54,
+      "1_week": 300,
+      "1_month": 530,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 1516.51
+    },
+    {
+      "date": "2025-06-17",
+      "overnight": 4718.4,
+      "1_week": 200,
+      "1_month": 150,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 850
+    },
+    {
+      "date": "2025-06-18",
+      "overnight": 5020.39,
+      "1_week": 260,
+      "1_month": 150,
+      "3_month": 150,
+      "6_month": null,
+      "1_year": null,
+      "other": 1319.09
+    },
+    {
+      "date": "2025-06-19",
+      "overnight": 3287.61,
+      "1_week": null,
+      "1_month": 50,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 708.05
+    },
+    {
+      "date": "2025-06-20",
+      "overnight": 2277.84,
+      "1_week": 900,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 980
+    },
+    {
+      "date": "2025-06-23",
+      "overnight": 3593.32,
+      "1_week": 50,
+      "1_month": 100,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 1130
+    },
+    {
+      "date": "2025-06-24",
+      "overnight": 4547.76,
+      "1_week": null,
+      "1_month": 250,
+      "3_month": 30,
+      "6_month": null,
+      "1_year": null,
+      "other": 718.18
+    },
+    {
+      "date": "2025-06-25",
+      "overnight": 4999.29,
+      "1_week": null,
+      "1_month": 80,
+      "3_month": 15,
+      "6_month": null,
+      "1_year": null,
+      "other": 70
+    },
+    {
+      "date": "2025-06-26",
+      "overnight": 4532.93,
+      "1_week": 50,
+      "1_month": 330,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 350
+    },
+    {
+      "date": "2025-06-30",
+      "overnight": 7028,
+      "1_week": 60,
+      "1_month": 250,
+      "3_month": 20,
+      "6_month": null,
+      "1_year": null,
+      "other": 1138
+    }
+  ],
+  "meta": {
+    "product": "interbank",
+    "last_updated": "2025-08-22 23:01:24",
+    "total_result": 0
+  }
+}

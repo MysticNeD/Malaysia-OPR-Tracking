@@ -1,0 +1,108 @@
+{
+  "data": [
+    {
+      "reference_date": "2023-07-03",
+      "reference_rate": "3.00",
+      "aggregate_volume": "25432.79"
+    },
+    {
+      "reference_date": "2023-07-04",
+      "reference_rate": "3.00",
+      "aggregate_volume": "23083.28"
+    },
+    {
+      "reference_date": "2023-07-05",
+      "reference_rate": "3.02",
+      "aggregate_volume": "17267.22"
+    },
+    {
+      "reference_date": "2023-07-06",
+      "reference_rate": "3.00",
+      "aggregate_volume": "23139.24"
+    },
+    {
+      "reference_date": "2023-07-07",
+      "reference_rate": "3.01",
+      "aggregate_volume": "26501.54"
+    },
+    {
+      "reference_date": "2023-07-10",
+      "reference_rate": "3.00",
+      "aggregate_volume": "24689.95"
+    },
+    {
+      "reference_date": "2023-07-11",
+      "reference_rate": "2.99",
+      "aggregate_volume": "28819.71"
+    },
+    {
+      "reference_date": "2023-07-12",
+      "reference_rate": "3.00",
+      "aggregate_volume": "24746.57"
+    },
+    {
+      "reference_date": "2023-07-13",
+      "reference_rate": "3.00",
+      "aggregate_volume": "24278.06"
+    },
+    {
+      "reference_date": "2023-07-14",
+      "reference_rate": "3.00",
+      "aggregate_volume": "26547.90"
+    },
+    {
+      "reference_date": "2023-07-17",
+      "reference_rate": "2.99",
+      "aggregate_volume": "23739.42"
+    },
+    {
+      "reference_date": "2023-07-18",
+      "reference_rate": "2.98",
+      "aggregate_volume": "25291.98"
+    },
+    {
+      "reference_date": "2023-07-20",
+      "reference_rate": "3.00",
+      "aggregate_volume": "26201.83"
+    },
+    {
+      "reference_date": "2023-07-21",
+      "reference_rate": "3.00",
+      "aggregate_volume": "26474.12"
+    },
+    {
+      "reference_date": "2023-07-24",
+      "reference_rate": "3.00",
+      "aggregate_volume": "28209.10"
+    },
+    {
+      "reference_date": "2023-07-25",
+      "reference_rate": "3.00",
+      "aggregate_volume": "26275.50"
+    },
+    {
+      "reference_date": "2023-07-26",
+      "reference_rate": "3.00",
+      "aggregate_volume": "27195.97"
+    },
+    {
+      "reference_date": "2023-07-27",
+      "reference_rate": "3.00",
+      "aggregate_volume": "24920.24"
+    },
+    {
+      "reference_date": "2023-07-28",
+      "reference_rate": "3.00",
+      "aggregate_volume": "23282.41"
+    },
+    {
+      "reference_date": "2023-07-31",
+      "reference_rate": "3.00",
+      "aggregate_volume": "27906.85"
+    }
+  ],
+  "meta": {
+    "last_updated": "2025-08-22 11:01:06",
+    "total_result": 20
+  }
+}

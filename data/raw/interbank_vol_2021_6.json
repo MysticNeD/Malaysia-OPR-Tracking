@@ -1,0 +1,309 @@
+{
+  "data": [
+    {
+      "date": "2021-06-01",
+      "overnight": 2003.38,
+      "1_week": 650,
+      "1_month": null,
+      "3_month": 100,
+      "6_month": null,
+      "1_year": null,
+      "other": null
+    },
+    {
+      "date": "2021-06-02",
+      "overnight": 2208.83,
+      "1_week": 250,
+      "1_month": 100,
+      "3_month": 300,
+      "6_month": null,
+      "1_year": null,
+      "other": 450
+    },
+    {
+      "date": "2021-06-03",
+      "overnight": 3328.34,
+      "1_week": 480,
+      "1_month": 210,
+      "3_month": null,
+      "6_month": null,
+      "1_year": 100,
+      "other": 332
+    },
+    {
+      "date": "2021-06-04",
+      "overnight": 2108.27,
+      "1_week": 50,
+      "1_month": 132.8,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 340
+    },
+    {
+      "date": "2021-06-05",
+      "overnight": 2108.27,
+      "1_week": 50,
+      "1_month": 132.8,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 340
+    },
+    {
+      "date": "2021-06-06",
+      "overnight": 2108.27,
+      "1_week": 50,
+      "1_month": 132.8,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 340
+    },
+    {
+      "date": "2021-06-07",
+      "overnight": 2108.27,
+      "1_week": 50,
+      "1_month": 132.8,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 340
+    },
+    {
+      "date": "2021-06-08",
+      "overnight": 3249.01,
+      "1_week": 730,
+      "1_month": 50,
+      "3_month": 465,
+      "6_month": null,
+      "1_year": null,
+      "other": 100
+    },
+    {
+      "date": "2021-06-09",
+      "overnight": 3681.14,
+      "1_week": 1030,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 900
+    },
+    {
+      "date": "2021-06-10",
+      "overnight": 3195.25,
+      "1_week": 311,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 250
+    },
+    {
+      "date": "2021-06-11",
+      "overnight": 3815.25,
+      "1_week": 240,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 100
+    },
+    {
+      "date": "2021-06-12",
+      "overnight": 3815.25,
+      "1_week": 240,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 100
+    },
+    {
+      "date": "2021-06-13",
+      "overnight": 3815.25,
+      "1_week": 240,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 100
+    },
+    {
+      "date": "2021-06-14",
+      "overnight": 3658.14,
+      "1_week": 300,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": null
+    },
+    {
+      "date": "2021-06-15",
+      "overnight": 2354.88,
+      "1_week": 530,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 50
+    },
+    {
+      "date": "2021-06-16",
+      "overnight": 2369.52,
+      "1_week": 300,
+      "1_month": 50,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 250
+    },
+    {
+      "date": "2021-06-17",
+      "overnight": 2416.31,
+      "1_week": 550,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 630
+    },
+    {
+      "date": "2021-06-18",
+      "overnight": 4703.46,
+      "1_week": 680,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 50
+    },
+    {
+      "date": "2021-06-19",
+      "overnight": 4703.46,
+      "1_week": 680,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 50
+    },
+    {
+      "date": "2021-06-20",
+      "overnight": 4703.46,
+      "1_week": 680,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 50
+    },
+    {
+      "date": "2021-06-21",
+      "overnight": 3878.56,
+      "1_week": 700,
+      "1_month": null,
+      "3_month": 300,
+      "6_month": null,
+      "1_year": null,
+      "other": 450
+    },
+    {
+      "date": "2021-06-22",
+      "overnight": 3455.69,
+      "1_week": 250,
+      "1_month": 100,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 370
+    },
+    {
+      "date": "2021-06-23",
+      "overnight": 3711.76,
+      "1_week": 350,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 300
+    },
+    {
+      "date": "2021-06-24",
+      "overnight": 3157.13,
+      "1_week": 240,
+      "1_month": 100,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 380
+    },
+    {
+      "date": "2021-06-25",
+      "overnight": 2777.81,
+      "1_week": 250,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 270
+    },
+    {
+      "date": "2021-06-26",
+      "overnight": 2777.81,
+      "1_week": 250,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 270
+    },
+    {
+      "date": "2021-06-27",
+      "overnight": 2777.81,
+      "1_week": 250,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 270
+    },
+    {
+      "date": "2021-06-28",
+      "overnight": 1659.05,
+      "1_week": 250,
+      "1_month": null,
+      "3_month": 50,
+      "6_month": null,
+      "1_year": null,
+      "other": null
+    },
+    {
+      "date": "2021-06-29",
+      "overnight": 2054.84,
+      "1_week": 100,
+      "1_month": null,
+      "3_month": 130,
+      "6_month": null,
+      "1_year": null,
+      "other": 200
+    },
+    {
+      "date": "2021-06-30",
+      "overnight": 3550.67,
+      "1_week": 309,
+      "1_month": null,
+      "3_month": null,
+      "6_month": null,
+      "1_year": null,
+      "other": 300
+    }
+  ],
+  "meta": {
+    "product": "interbank",
+    "last_updated": "2025-08-22 23:01:24",
+    "total_result": 0
+  }
+}

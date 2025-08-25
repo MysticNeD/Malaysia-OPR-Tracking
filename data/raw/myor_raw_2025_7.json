@@ -1,0 +1,123 @@
+{
+  "data": [
+    {
+      "reference_date": "2025-07-01",
+      "reference_rate": "3.00",
+      "aggregate_volume": "27720.54"
+    },
+    {
+      "reference_date": "2025-07-02",
+      "reference_rate": "3.00",
+      "aggregate_volume": "28277.74"
+    },
+    {
+      "reference_date": "2025-07-03",
+      "reference_rate": "3.00",
+      "aggregate_volume": "30420.91"
+    },
+    {
+      "reference_date": "2025-07-04",
+      "reference_rate": "3.00",
+      "aggregate_volume": "31521.27"
+    },
+    {
+      "reference_date": "2025-07-07",
+      "reference_rate": "3.00",
+      "aggregate_volume": "35156.76"
+    },
+    {
+      "reference_date": "2025-07-08",
+      "reference_rate": "3.00",
+      "aggregate_volume": "36885.59"
+    },
+    {
+      "reference_date": "2025-07-09",
+      "reference_rate": "2.77",
+      "aggregate_volume": "32713.29"
+    },
+    {
+      "reference_date": "2025-07-10",
+      "reference_rate": "2.75",
+      "aggregate_volume": "33167.10"
+    },
+    {
+      "reference_date": "2025-07-11",
+      "reference_rate": "2.75",
+      "aggregate_volume": "37444.84"
+    },
+    {
+      "reference_date": "2025-07-14",
+      "reference_rate": "2.75",
+      "aggregate_volume": "36202.30"
+    },
+    {
+      "reference_date": "2025-07-15",
+      "reference_rate": "2.75",
+      "aggregate_volume": "34883.12"
+    },
+    {
+      "reference_date": "2025-07-16",
+      "reference_rate": "2.75",
+      "aggregate_volume": "29848.55"
+    },
+    {
+      "reference_date": "2025-07-17",
+      "reference_rate": "2.75",
+      "aggregate_volume": "32960.49"
+    },
+    {
+      "reference_date": "2025-07-18",
+      "reference_rate": "2.75",
+      "aggregate_volume": "32372.83"
+    },
+    {
+      "reference_date": "2025-07-21",
+      "reference_rate": "2.75",
+      "aggregate_volume": "29331.37"
+    },
+    {
+      "reference_date": "2025-07-22",
+      "reference_rate": "2.75",
+      "aggregate_volume": "30592.35"
+    },
+    {
+      "reference_date": "2025-07-23",
+      "reference_rate": "2.75",
+      "aggregate_volume": "31632.09"
+    },
+    {
+      "reference_date": "2025-07-24",
+      "reference_rate": "2.75",
+      "aggregate_volume": "29850.93"
+    },
+    {
+      "reference_date": "2025-07-25",
+      "reference_rate": "2.75",
+      "aggregate_volume": "34140.60"
+    },
+    {
+      "reference_date": "2025-07-28",
+      "reference_rate": "2.75",
+      "aggregate_volume": "31715.23"
+    },
+    {
+      "reference_date": "2025-07-29",
+      "reference_rate": "2.75",
+      "aggregate_volume": "32909.27"
+    },
+    {
+      "reference_date": "2025-07-30",
+      "reference_rate": "2.75",
+      "aggregate_volume": "30169.23"
+    },
+    {
+      "reference_date": "2025-07-31",
+      "reference_rate": "2.75",
+      "aggregate_volume": "33675.42"
+    }
+  ],
+  "meta": {
+    "last_updated": "2025-08-22 11:01:06",
+    "total_result": 23
+  }
+}
