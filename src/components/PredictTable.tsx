@@ -15,7 +15,7 @@ const PredictTable: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/predict")
+    fetch("https://malaysia-opr-tracking.onrender.com/predict")
       .then((res) => res.json())
       .then((json) => {
         setData(json);
