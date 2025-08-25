@@ -1,7 +1,9 @@
 # models/predict.py
-OPR_DECISIONS = ["2025-09-04", "2025-11-06"]
 """
-Predict next OPR movement (up/same/down) based on trained model.
+Predict next OPR movement (up/same/down) based on trained model using current data.
+This is Direction B:
+    Input: today (or any date)
+    Output: prediction for the next OPR decision in OPR_DECISIONS
 Usage:
     python predict.py
 """
@@ -13,10 +15,14 @@ import numpy as np
 import joblib
 import warnings
 
+warnings.filterwarnings("ignore")
+
+# ------------------------
+# Config
+# ------------------------
+OPR_DECISIONS = ["2025-09-04", "2025-11-06"]  # fixed future dates
 today = datetime.now().date()
 OPR_DECISIONS = [d for d in OPR_DECISIONS if datetime.strptime(d, "%Y-%m-%d").date() >= today]
-
-warnings.filterwarnings("ignore")
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = (ROOT / "data").resolve()
@@ -41,9 +47,6 @@ def read_csv_if_exists(name):
 # ------------------------
 # Load trained model
 # ------------------------
-# ------------------------
-# 延迟加载模型
-# ------------------------
 _model_bundle = None
 _clf = None
 _features = None
@@ -56,14 +59,11 @@ def _load_model():
         _features = _model_bundle["features"]
     return _clf, _features
 
-
-
 # ------------------------
 # Load historical data
 # ------------------------
 myor = read_csv_if_exists("myor.csv")
 if myor is not None:
-    myor.columns = [c.strip() for c in myor.columns]
     if str(myor.columns[0]).strip().lower() != "date":
         myor = myor.rename(columns={myor.columns[0]: "date"})
     myor_col = next((c for c in myor.columns if c.lower() in ["myor","reference_rate","rate"]), None)
@@ -73,15 +73,12 @@ if myor is not None:
     if vol_col and vol_col != "aggregate_volume":
         myor = myor.rename(columns={vol_col: "aggregate_volume"})
     myor["date"] = pd.to_datetime(myor["date"], errors="coerce").dt.date
-    if "myor" in myor.columns:
-        myor["myor"] = pd.to_numeric(myor["myor"], errors="coerce")
-    if "aggregate_volume" in myor.columns:
-        myor["aggregate_volume"] = pd.to_numeric(myor["aggregate_volume"], errors="coerce")
+    myor["myor"] = pd.to_numeric(myor["myor"], errors="coerce")
+    myor["aggregate_volume"] = pd.to_numeric(myor.get("aggregate_volume", 0.0), errors="coerce").fillna(0.0)
     myor = myor.dropna(subset=["date"]).reset_index(drop=True)
 
 interbank = read_csv_if_exists("interbank_rates.csv")
 if interbank is not None:
-    interbank.columns = [c.strip() for c in interbank.columns]
     if str(interbank.columns[0]).strip().lower() != "date":
         interbank = interbank.rename(columns={interbank.columns[0]: "date"})
     interbank["date"] = pd.to_datetime(interbank["date"], errors="coerce").dt.date
@@ -93,105 +90,117 @@ if interbank is not None:
 
 interbank_vol = read_csv_if_exists("interbank_volumes.csv")
 if interbank_vol is not None:
-    interbank_vol.columns = [c.strip() for c in interbank_vol.columns]
     if str(interbank_vol.columns[0]).strip().lower() != "date":
         interbank_vol = interbank_vol.rename(columns={interbank_vol.columns[0]: "date"})
     interbank_vol["date"] = pd.to_datetime(interbank_vol["date"], errors="coerce").dt.date
-    if "volume" in interbank_vol.columns:
-        interbank_vol["volume"] = pd.to_numeric(interbank_vol["volume"], errors="coerce")
+    interbank_vol["volume"] = pd.to_numeric(interbank_vol.get("volume", 0.0), errors="coerce").fillna(0.0)
     interbank_vol = interbank_vol.dropna(subset=["date"]).reset_index(drop=True)
 
 # ------------------------
-# Feature generator
+# Feature generator (Direction B)
 # ------------------------
-def generate_features(pred_date: date, lookback_days=7):
+def generate_features(pred_date: date, lookback_days=None):
+    """
+    Generate features for prediction using pred_date.
+    lookback_days: if None, use days until next OPR decision or default 60
+    """
+    # Determine lookback_days
+    if lookback_days is None and OPR_DECISIONS:
+        next_opr = min(datetime.strptime(d, "%Y-%m-%d").date() for d in OPR_DECISIONS)
+        lookback_days = (next_opr - pred_date).days
+        if lookback_days <= 0:
+            lookback_days = 60  # fallback
+        elif lookback_days > 60:
+            lookback_days = 60  # cap at 60
+    elif lookback_days is None:
+        lookback_days = 60
+
     feat = {"date": pred_date}
 
     # MYOR features
     if myor is not None:
         lb_start = pred_date - timedelta(days=lookback_days)
         window = myor[(myor["date"] > lb_start) & (myor["date"] <= pred_date)]
-        if not window.empty and "myor" in window.columns:
+        if not window.empty:
             feat["myor_mean_7d"] = window["myor"].mean()
             feat["myor_last"] = window["myor"].iloc[-1]
+            feat["myor_vol_mean_7d"] = window["aggregate_volume"].mean()
+            feat["myor_vol_last"] = window["aggregate_volume"].iloc[-1]
         else:
-            feat["myor_mean_7d"] = np.nan
-            feat["myor_last"] = np.nan
-    else:
-        feat["myor_mean_7d"] = np.nan
-        feat["myor_last"] = np.nan
+            feat["myor_mean_7d"] = 0.0
+            feat["myor_last"] = 0.0
+            feat["myor_vol_mean_7d"] = 0.0
+            feat["myor_vol_last"] = 0.0
 
     # Interbank overnight
-    if interbank is not None and "tenor" in interbank.columns:
+    if interbank is not None:
         lb_start = pred_date - timedelta(days=lookback_days)
         ov = interbank[(interbank["tenor"].str.lower().str.contains("overnight", na=False)) &
                        (interbank["date"] > lb_start) & (interbank["date"] <= pred_date)]
-        feat["overnight_mean_7d"] = ov["rate"].mean() if not ov.empty else np.nan
-        feat["overnight_last"] = ov["rate"].iloc[-1] if not ov.empty else np.nan
-    else:
-        feat["overnight_mean_7d"] = np.nan
-        feat["overnight_last"] = np.nan
+        feat["overnight_mean_7d"] = ov["rate"].mean() if not ov.empty else 0.0
+        feat["overnight_last"] = ov["rate"].iloc[-1] if not ov.empty else 0.0
 
-    # Interbank 1-month
-    if interbank is not None and "tenor" in interbank.columns:
+        # 1-month
         m1 = interbank[(interbank["tenor"].str.contains("1_month|1 month|1_month", case=False, regex=True)) &
-                       (interbank["date"] > pred_date - timedelta(days=lookback_days)) & (interbank["date"] <= pred_date)]
-        feat["m1_mean_7d"] = m1["rate"].mean() if not m1.empty else np.nan
+                       (interbank["date"] > lb_start) & (interbank["date"] <= pred_date)]
+        feat["m1_mean_7d"] = m1["rate"].mean() if not m1.empty else 0.0
     else:
-        feat["m1_mean_7d"] = np.nan
+        feat["overnight_mean_7d"] = 0.0
+        feat["overnight_last"] = 0.0
+        feat["m1_mean_7d"] = 0.0
 
-    # Volume features
-    if interbank_vol is not None and "volume" in interbank_vol.columns:
+    # Interbank volume
+    if interbank_vol is not None:
         lb_start = pred_date - timedelta(days=lookback_days)
         vv = interbank_vol[(interbank_vol["date"] > lb_start) & (interbank_vol["date"] <= pred_date)]
-        feat["vol_mean_7d"] = vv["volume"].mean() if not vv.empty else np.nan
-        feat["vol_sum_7d"] = vv["volume"].sum() if not vv.empty else np.nan
+        feat["vol_mean_7d"] = vv["volume"].mean() if not vv.empty else 0.0
+        feat["vol_sum_7d"] = vv["volume"].sum() if not vv.empty else 0.0
     else:
-        feat["vol_mean_7d"] = np.nan
-        feat["vol_sum_7d"] = np.nan
+        feat["vol_mean_7d"] = 0.0
+        feat["vol_sum_7d"] = 0.0
 
     # Spread
-    if feat["myor_last"] is not np.nan:
-        feat["myor_minus_opr"] = np.nan  # 因为预测时没有当前 OPR，暂时置空
-    else:
-        feat["myor_minus_opr"] = np.nan
+    feat["myor_minus_opr"] = 0.0  # since we don't know next OPR
 
     # Diff features
-    feat["myor_diff"] = feat["myor_last"] - feat["myor_mean_7d"] if pd.notna(feat["myor_last"]) else 0.0
-    feat["overnight_diff"] = feat["overnight_last"] - feat["overnight_mean_7d"] if pd.notna(feat["overnight_last"]) else 0.0
+    feat["myor_diff"] = feat["myor_last"] - feat["myor_mean_7d"]
+    feat["overnight_diff"] = feat["overnight_last"] - feat["overnight_mean_7d"]
 
-
-    # 构建 DataFrame
+    # Build DataFrame
+    clf, _features = _load_model()
     X_pred = pd.DataFrame([feat])
     for f in _features:
         if f not in X_pred.columns or pd.isna(X_pred.at[0, f]):
-            X_pred[f] = 0.0  # 没有数据就用0（训练时SimpleImputer策略是mean, 对新数据0也安全）
+            X_pred[f] = 0.0
 
     return X_pred[_features]
 
 # ------------------------
 # Predict
 # ------------------------
-def predict_opr(pred_date: str):
-    clf, features = _load_model()
-    pred_date_dt = datetime.strptime(pred_date, "%Y-%m-%d").date()
-    X_pred = generate_features(pred_date_dt)  # fix here
+def predict_opr(pred_date):
+    clf, _ = _load_model()
+    if isinstance(pred_date, str):
+        pred_date_dt = datetime.strptime(pred_date, "%Y-%m-%d").date()
+    else:  # assume datetime.date
+        pred_date_dt = pred_date
+    X_pred = generate_features(pred_date_dt)
     label = clf.predict(X_pred)[0]
     proba = clf.predict_proba(X_pred)[0]
     return label, dict(zip(clf.classes_, proba))
 
 
-
 # ------------------------
-# Example usage
+# Main
 # ------------------------
 if __name__ == "__main__":
-    print("[info] Predicting for next OPR decision dates...")
+    print("[info] Predicting for next OPR decision dates based on today's data...")
 
-    if OPR_DECISIONS:  # 确保还有未来的日期
-        fd = OPR_DECISIONS[0]  # 只取最近的那个日期
-        label, proba = predict_opr(fd)
-        proba = {k: float(v) for k, v in proba.items()}  # 转 float 方便展示
-        print(f"Date: {fd}, Predicted OPR: {label}, Probabilities: {proba}")
-    else:
+    if not OPR_DECISIONS:
         print("[warning] No future OPR decision dates found.")
+    else:
+        fd = OPR_DECISIONS[0]  # next OPR decision
+        label, proba = predict_opr(today)
+        proba = {k: float(v) for k, v in proba.items()}
+        print(f"Today: {today}, Next OPR date: {fd}")
+        print(f"Predicted OPR movement: {label.upper()}, Probabilities: {proba}")
