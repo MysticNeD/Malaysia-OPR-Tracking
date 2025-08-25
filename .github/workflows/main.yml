@@ -2,7 +2,7 @@ name: M-OPR-Tracking Daily Schedule Update
 
 on:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '0 16 * * *'
   workflow_dispatch:
 
 jobs:
