@@ -185,10 +185,11 @@ interface ChartDataItem {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold text-white 200 mb-4 bg-gradient-primary bg-clip-text">
-            Malaysia OPR Rate Tracker
+            Malaysia OPR Tracker
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Real-time analysis and predictions for Bank Negara Malaysia's Monetary Policy Committee decisions
+            This website provides real-time Malaysia's Overnight Policy Rate and using financial metrics to predict the possibility of next OPR movement.
+            The current OPR is {currentOPR}.
           </p>
         </div>
 
