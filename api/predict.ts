@@ -3,14 +3,12 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const response = await fetch("https://malaysia-opr-tracking.onrender.com/predict", {
-      method: "GET",
-      headers: {
-        "Authorization": "Basic " + Buffer.from(
-          process.env.APP_USERNAME + ":" + process.env.APP_PASSWORD
-        ).toString("base64"),
-        "x-api-key": process.env.LOAD_DATA_KEY!
-      }
-    });
+        method: "GET",
+        headers: {
+            "x-api-key": process.env.LOAD_DATA_KEY!
+        }
+        });
+
 
     if (!response.ok) {
       const text = await response.text();
