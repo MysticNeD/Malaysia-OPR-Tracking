@@ -31,7 +31,7 @@ const Index = () => {
   const [ib_vol, setIbVol] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/predict?next_only=true`)
+    fetch(`${API_BASE_URL}/predict`)
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
