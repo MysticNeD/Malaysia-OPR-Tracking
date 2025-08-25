@@ -44,20 +44,18 @@ def read_csv_if_exists(name):
 # ------------------------
 # 延迟加载模型
 # ------------------------
-clf = None
-features = None
+_model_bundle = None
+_clf = None
+_features = None
 
 def _load_model():
     global _model_bundle, _clf, _features
     if _model_bundle is None:
-        from pathlib import Path
-        import joblib
-        ROOT = Path(__file__).resolve().parent.parent
-        MODEL_DIR = (ROOT / "models").resolve()
         _model_bundle = joblib.load(MODEL_DIR / "model.pkl")
         _clf = _model_bundle["model"]
         _features = _model_bundle["features"]
     return _clf, _features
+
 
 
 # ------------------------
@@ -165,21 +163,23 @@ def generate_features(pred_date: date, lookback_days=7):
 
     # 构建 DataFrame
     X_pred = pd.DataFrame([feat])
-    for f in features:
+    for f in _features:
         if f not in X_pred.columns or pd.isna(X_pred.at[0, f]):
             X_pred[f] = 0.0  # 没有数据就用0（训练时SimpleImputer策略是mean, 对新数据0也安全）
 
-    return X_pred[features]
+    return X_pred[_features]
 
 # ------------------------
 # Predict
 # ------------------------
 def predict_opr(pred_date: str):
     clf, features = _load_model()
-    X_pred = generate_features(pred_date, features)
+    pred_date_dt = datetime.strptime(pred_date, "%Y-%m-%d").date()
+    X_pred = generate_features(pred_date_dt, features)
     label = clf.predict(X_pred)[0]
     proba = clf.predict_proba(X_pred)[0]
     return label, dict(zip(clf.classes_, proba))
+
 
 # ------------------------
 # Example usage
