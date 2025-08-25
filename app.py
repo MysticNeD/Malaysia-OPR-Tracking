@@ -60,8 +60,9 @@ def secure_data(user=Depends(verify_credentials)):
 #    return {"secret": settings.app_secret_key}
 
 @app.get("/health")
+@app.head("/health")  # ✅ 支持 HEAD
 def health():
-    return {"ok": True}
+    return JSONResponse(content={"ok": True})
 
 @app.get("/predict")
 def predict_next_opr(next_only: bool = True, api_key: str = Depends(verify_api_key)):
