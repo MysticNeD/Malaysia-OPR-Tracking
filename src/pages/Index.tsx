@@ -114,7 +114,7 @@ const Index = () => {
     {
       title: 'Current OPR',
       value: latestOpr ? `${latestOpr.new_opr_level}%` : "--",
-      change: 'Last Updated:' + latestOpr ? `${latestOpr.date}%` : "--",
+      change: '',
       changeType: 'neutral' as const,
       icon: Percent,
       description: 'Bank Negara Malaysia Official Policy Rate'
