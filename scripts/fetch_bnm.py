@@ -140,35 +140,59 @@ def fetch_opr(lookback_years: int = 1) -> pd.DataFrame:
         df_api = pd.DataFrame(columns=["date", "new_opr_level", "change_in_opr", "year"])
 
     # 5) Merge with existing data/oprs.csv if exists
+        # 5) Merge with existing data/oprs.csv if exists
     existing_path = DATA_DIR / "oprs.csv"
     if existing_path.exists():
         try:
-            existing = pd.read_csv(existing_path)  # 先读，不 parse_dates
-            existing.columns = [c.strip() for c in existing.columns]  # 去掉空格
-            if "date" in existing.columns:
-                existing["date"] = pd.to_datetime(existing["date"], errors="coerce").dt.date
-            else:
-                raise ValueError("existing oprs.csv 没有 'date' 列")
+            existing = pd.read_csv(existing_path)
 
+            # --- 清理列名，避免因为空格导致找不到 ---
+            existing.columns = [c.strip().lower() for c in existing.columns]
+
+            # --- 统一列名 ---
             if "rate" in existing.columns and "new_opr_level" not in existing.columns:
                 existing = existing.rename(columns={"rate": "new_opr_level"})
-            existing["date"] = pd.to_datetime(existing["date"]).dt.date
+
+            # --- 确保有 date 列 ---
+            if "date" not in existing.columns:
+                raise ValueError("existing oprs.csv 没有 'date' 列")
+
+            # --- 解析 date ---
+            existing["date"] = pd.to_datetime(existing["date"], errors="coerce").dt.date
+
+            # --- 合并 ---
             combined = pd.concat([existing, df_api], ignore_index=True, sort=False)
-            combined = combined.drop_duplicates(subset=["date"], keep="last").sort_values("date").reset_index(drop=True)
-            if "new_opr_level" in combined.columns:
-                combined["new_opr_level"] = pd.to_numeric(combined["new_opr_level"], errors="coerce")
-            if "change_in_opr" in combined.columns:
-                combined["change_in_opr"] = pd.to_numeric(combined["change_in_opr"], errors="coerce")
+
+            # --- 去重 + 排序 ---
+            combined = (
+                combined.drop_duplicates(subset=["date"], keep="last")
+                .sort_values("date")
+                .reset_index(drop=True)
+            )
+
+            # --- 数据类型修正 ---
+            for col in ["new_opr_level", "change_in_opr"]:
+                if col in combined.columns:
+                    combined[col] = pd.to_numeric(combined[col], errors="coerce")
+
+            # --- year 列 ---
             if "year" not in combined.columns:
                 combined["year"] = pd.to_datetime(combined["date"]).dt.year
+
             return combined[["date", "new_opr_level", "change_in_opr", "year"]]
+
         except Exception as e:
             print(f"[opr] error merging with existing oprs.csv: {e}", file=sys.stderr)
+            # fallback 只用 API 数据
+            if "year" not in df_api.columns and "date" in df_api.columns:
+                df_api["year"] = pd.to_datetime(df_api["date"]).dt.year
             return df_api[["date", "new_opr_level", "change_in_opr", "year"]]
     else:
+        # 如果本地没有 oprs.csv
         if "year" not in df_api.columns and "date" in df_api.columns:
             df_api["year"] = pd.to_datetime(df_api["date"]).dt.year
         return df_api[["date", "new_opr_level", "change_in_opr", "year"]]
+
 
 
 
