@@ -1,0 +1,50 @@
+name: M-OPR-Tracking Daily Schedule Update
+
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13.3'
+
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+
+      - name: Prepare directories
+        run: |
+          mkdir -p data outputs models
+
+
+      - name: Run myopr-watch
+        id: run_script
+        run: |
+          python scripts/fetch_bnm.py
+          python models/train.py
+          python models/predict.py
+          python main.py
+          
+
+
+      - name: Commit and push predictions
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add -f data/predictions.csv data/predictions.json
+          git commit -m "Update predictions [skip ci]" || echo "No changes to commit"
+          git push
+
