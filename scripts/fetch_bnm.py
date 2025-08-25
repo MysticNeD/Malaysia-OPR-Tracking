@@ -66,7 +66,7 @@ def _normalize_date(s: Any) -> Any:
     except Exception:
         return s
 
-def iter_years(n_years: int = 10):
+def iter_years(n_years: int = 1):
     """
     Yield years from current year going back n_years-1.
     Example: if now is 2025 and n_years=5 -> yields 2025,2024,2023,2022,2021
@@ -77,7 +77,7 @@ def iter_years(n_years: int = 10):
         yield cur_year - i
 
 
-def fetch_opr(lookback_years: int = 10) -> pd.DataFrame:
+def fetch_opr(lookback_years: int = 1) -> pd.DataFrame:
     """
     Robust OPR fetcher:
     - Try /opr (may return single dict or list)
@@ -182,7 +182,7 @@ def iter_months(n_months: int) -> Iterable[Tuple[int, int]]:
         yield d.year, d.month
 
 
-def fetch_myor(n_months: int = 10) -> pd.DataFrame:
+def fetch_myor(n_months: int = 1) -> pd.DataFrame:
     """
     MYOR-I: /my-overnight-rate-i
     支持 /my-overnight-rate-i/month/{month}/year/{year}?reverse=true
@@ -242,7 +242,7 @@ def fetch_myor(n_months: int = 10) -> pd.DataFrame:
     return df
 
 
-def fetch_interbank_rates(n_months: int = 115, product: str = "interbank") -> pd.DataFrame:
+def fetch_interbank_rates(n_months: int = 1, product: str = "interbank") -> pd.DataFrame:
     """
     Interbank rates: /interest-rate
     Output: normalized long-form DataFrame with columns: date, tenor, rate
@@ -346,7 +346,7 @@ def fetch_interbank_rates(n_months: int = 115, product: str = "interbank") -> pd
     return df
 
 
-def fetch_interbank_volumes(n_months: int = 115, product: str = "interbank") -> pd.DataFrame:
+def fetch_interbank_volumes(n_months: int = 1, product: str = "interbank") -> pd.DataFrame:
     """
     Interbank volumes: /interest-volume
     Output: long-form DataFrame with columns: date, tenor, volume
@@ -487,21 +487,21 @@ def main():
         print("Error fetching OPR:", e, file=sys.stderr)
 
     try:
-        myor = fetch_myor(n_months=115)
+        myor = fetch_myor(n_months=1)
         _write_csv(myor, DATA_DIR / "myor.csv")
         print(f"Saved {DATA_DIR / 'myor.csv'} ({len(myor)} rows)")
     except Exception as e:
         print("Error fetching MYOR:", e, file=sys.stderr)
 
     try:
-        ib_rates = fetch_interbank_rates(n_months=115, product="interbank")
+        ib_rates = fetch_interbank_rates(n_months=1, product="interbank")
         _write_csv(ib_rates, DATA_DIR / "interbank_rates.csv")
         print(f"Saved {DATA_DIR / 'interbank_rates.csv'} ({len(ib_rates)} rows)")
     except Exception as e:
         print("Error fetching interbank rates:", e, file=sys.stderr)
 
     try:
-        ib_vols = fetch_interbank_volumes(n_months=115, product="interbank")
+        ib_vols = fetch_interbank_volumes(n_months=1, product="interbank")
         _write_csv(ib_vols, DATA_DIR / "interbank_volumes.csv")
         print(f"Saved {DATA_DIR / 'interbank_volumes.csv'} ({len(ib_vols)} rows)")
     except Exception as e:

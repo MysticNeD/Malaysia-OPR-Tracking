@@ -9,5 +9,6 @@ pathlib
 imbalanced-learn
 joblib
 matplotlib
+pydantic_settings
 
 
