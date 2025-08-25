@@ -44,7 +44,11 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add -f data/predictions.csv data/predictions.json
-          git commit -m "Update predictions [skip ci]" || echo "No changes to commit"
+          git add -f data/**/*.csv data/**/*.json models/*.pkl
+          git commit -m "Daily update [skip ci]" || echo "No changes to commit"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
 
