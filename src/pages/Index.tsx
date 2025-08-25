@@ -192,7 +192,7 @@ interface ChartDataItem {
             The current OPR is {latestOpr ? `${latestOpr.new_opr_level}%` : 'Loading...'}.
           </p>
 
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm text-muted-foreground max-w-2xl mx-auto mt-4">
             Note: If the data are not showing up, please wait for a minute to load the data. If the problem persists, please reload the page and 
             the data should be showing up. (Sorry because the backend server is free and will sleep after a period of inactivity 🥲.)
           </p>
