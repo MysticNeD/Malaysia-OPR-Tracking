@@ -189,8 +189,9 @@ interface ChartDataItem {
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             This website provides real-time Malaysia's Overnight Policy Rate and using financial metrics to predict the possibility of next OPR movement.
-            The current OPR is {latestOpr.new_opr_level}%.
+            The current OPR is {latestOpr ? `${latestOpr.new_opr_level}%` : 'Loading...'}.
           </p>
+
         </div>
 
         {/* MPC Countdown */}
