@@ -114,10 +114,10 @@ const Index = () => {
     {
       title: 'Current OPR',
       value: latestOpr ? `${latestOpr.new_opr_level}%` : "--",
-      change: '',
+      change: ' ',
       changeType: 'neutral' as const,
       icon: Percent,
-      description: 'Bank Negara Malaysia Official Policy Rate'
+      description: 'Bank Negara Malaysia Overnight Policy Rate'
     },
 
     {
@@ -126,7 +126,7 @@ const Index = () => {
       change: 'Updated Every day',
       changeType: 'positive' as const,
       icon: TrendingUp,
-      description: 'Malaysia Overnight Rate'
+      description: 'MY0R-i Daily Volume'
     },
     {
       title: 'Kuala Lumpur Interbank - Rate',
