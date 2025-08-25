@@ -20,7 +20,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-                   "https://malaysia-opr-tracking.vercel.app/"
+                   "https://malaysia-opr-tracking.vercel.app/",
                    "13.228.225.19",
                     "18.142.128.26",
                     "54.254.162.138"],
