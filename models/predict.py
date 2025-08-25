@@ -175,10 +175,11 @@ def generate_features(pred_date: date, lookback_days=7):
 def predict_opr(pred_date: str):
     clf, features = _load_model()
     pred_date_dt = datetime.strptime(pred_date, "%Y-%m-%d").date()
-    X_pred = generate_features(pred_date_dt, features)
+    X_pred = generate_features(pred_date_dt)  # fix here
     label = clf.predict(X_pred)[0]
     proba = clf.predict_proba(X_pred)[0]
     return label, dict(zip(clf.classes_, proba))
+
 
 
 # ------------------------
