@@ -1,17 +1,28 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const response = await fetch("https://malaysia-opr-tracking.onrender.com/predict", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Basic " + Buffer.from(
-        process.env.APP_USERNAME + ":" + process.env.APP_PASSWORD
-      ).toString("base64")
-    },
-    body: req.body
-  });
+  try {
+    const response = await fetch("https://malaysia-opr-tracking.onrender.com/predict", {
+      method: "GET",
+      headers: {
+        "Authorization": "Basic " + Buffer.from(
+          process.env.APP_USERNAME + ":" + process.env.APP_PASSWORD
+        ).toString("base64"),
+        "x-api-key": process.env.LOAD_DATA_KEY!
+      }
+    });
 
-  const data = await response.json();
-  res.status(200).json(data);
+    if (!response.ok) {
+      const text = await response.text();
+      console.error("Render API error:", text);
+      return res.status(response.status).send(text);
+    }
+
+    const data = await response.json();
+    res.status(200).json(data);
+
+  } catch (err) {
+    console.error("Vercel handler error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
 }
