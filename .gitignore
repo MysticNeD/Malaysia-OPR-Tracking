@@ -51,3 +51,8 @@ security.py
 !vercel.json
 !package.json
 !tsconfig.json
+!api/predict.ts
+!api/data/oprs.ts
+!api/data/myor.ts
+!api/data/interbank_rates.ts
+!api/data/interbank_volumes.ts
