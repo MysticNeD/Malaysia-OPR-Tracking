@@ -18,9 +18,13 @@ app = FastAPI(debug=os.getenv("DEBUG", "false").lower() == "true")
 print("LOAD_DATA_KEY:", API_KEY)
 
 def verify_api_key(x_api_key: str = Header(None)):
+    print(f"Received x-api-key header: '{x_api_key}'")
+    print(f"Expected API_KEY on server: '{API_KEY}'")
     if x_api_key != API_KEY:
+        print("API key mismatch. Denying access.")
         raise HTTPException(status_code=403, detail="Forbidden")
 
+    print("API key verified successfully.")
 
 # 如果会用前端（Vite 默认 5173）访问后端，请保留 CORS
 app.add_middleware(
