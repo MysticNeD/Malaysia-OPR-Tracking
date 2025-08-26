@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  
   console.log("Vercel Function sees LOAD_DATA_KEY as:", process.env.LOAD_DATA_KEY);
   const RENDER_API_URL = "https://malaysia-opr-tracking.onrender.com/predict";
 
@@ -19,7 +20,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // 非 200 响应，返回原始文本
       const text = await response.text();
       console.error("Render API returned error:", text);
-      return res.status(response.status).send({ error: text });
+      return res.status(response.status).json({ error: text });
     }
 
     // 尝试解析 JSON
