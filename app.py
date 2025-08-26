@@ -3,7 +3,7 @@
 # This file combines all API endpoints into a single FastAPI application
 # to simplify deployment and avoid Vercel-specific runtime configuration issues.
 
-from fastapi import FastAPI, Depends, Header, HTTPException
+from fastapi import FastAPI, Depends, Header, HTTPException, Response
 from fastapi.responses import JSONResponse
 from fastapi.requests import Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -53,9 +53,10 @@ app.add_middleware(
 # --------------------
 
 # Health check endpoint
+@app.get("/health")
 @app.head("/health")
 def health():
-    return JSONResponse(content={"ok": True})
+    return Response(content='{"ok": true}', media_type="application/json")
 
 # Utility function to read CSV data into a JSON-like format
 def read_csv_as_json(path: str):
