@@ -1,33 +1,44 @@
 {
   "compilerOptions": {
-    /* 路径映射 */
+    /* 基础路径映射 */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
 
-    /* 编译选项 */
+    /* 通用编译选项 */
     "target": "ESNext",
-    "module": "NodeNext",                 // ✅ 关键修改，支持 import.meta
-    "moduleResolution": "NodeNext",       // ✅ 跟 module 保持一致
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+
+    /* 模块系统（支持 import.meta & Node & Vite） */
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
 
+    /* 仅做类型检查，不生成 JS（交给 Vite/Node 运行时处理） */
+    "noEmit": true,
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true,
+
     /* 类型检查松紧度 */
+    "strict": false,
     "noImplicitAny": false,
-    "noUnusedParameters": false,
     "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "strictNullChecks": false,
 
     /* Vite 相关 */
-    "types": ["vite/client"],
-    "jsx": "react-jsx"
+    "types": ["vite/client"]
   },
   "include": [
     "src",
+    "api",                // Node/后端 API 代码
+    "vite.config.ts",
     "vite-env.d.ts"
   ],
   "exclude": [
