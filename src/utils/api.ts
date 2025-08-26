@@ -1,4 +1,5 @@
-const API_BASE_URL = import.meta.env.VITE_DATA_THE_API_ABCDE;
+// src/utils/api.ts
+const API_BASE_URL = import.meta.env.VITE_DATA_THE_API_ABCDE?.replace(/\/?$/, "/");
 const API_KEY = import.meta.env.VITE_LOAD_API_KEY;
 
 export async function apiFetch(path: string) {
