@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/**/*.ts": {
-      "runtime": "@vercel/node@16.x"
+      "runtime": "@vercel/node@22.x"
     }
   },
   "routes": [
@@ -11,7 +11,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/src/pages/index.html"
+      "dest": "src/pages/index.tsx"
     }
   ]
 }
