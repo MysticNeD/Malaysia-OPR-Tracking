@@ -1,21 +1,37 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
   "compilerOptions": {
+    /* 路径映射，支持 @/ 指向 src */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
+
+    /* 编译选项 */
+    "target": "ESNext",                // 支持最新语法
+    "module": "esnext",              // Vercel serverless 需要 CommonJS
+    "moduleResolution": "Node",        // Node.js 模块解析
+    "resolveJsonModule": true,         // 支持 import JSON
+    "esModuleInterop": true,           // 兼容 commonjs 包
+    "allowJs": true,                   // 允许引入 js
+    "skipLibCheck": true,              // 跳过类型检查
+    "forceConsistentCasingInFileNames": true,
+
+    /* 类型检查松紧度（你之前关掉了很多，这里保持） */
     "noImplicitAny": false,
     "noUnusedParameters": false,
-    "skipLibCheck": true,
-    "allowJs": true,
     "noUnusedLocals": false,
     "strictNullChecks": false,
-    "module": "commonjs", // Ensure CommonJS for Vercel serverless functions
-    "moduleResolution": "node" // Required for Node.js resolution
-  }
+
+    /* Vite 相关 */
+    "types": ["vite/client"],          // 加入 vite 的类型定义
+    "jsx": "react-jsx"                 // 如果你用 React
+  },
+  "include": [
+    "src",
+    "vite-env.d.ts"                         // 确保 env.d.ts 被包含
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

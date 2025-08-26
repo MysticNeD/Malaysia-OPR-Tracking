@@ -15,6 +15,7 @@ import {
   Globe
 } from 'lucide-react';
 import dashboardBg from '@/assets/dashboard-bg.jpg';
+import { apiFetch } from "@/utils/api";
 
 function escapeHtml(unsafe: string) {
   return unsafe
@@ -40,7 +41,7 @@ const Index = () => {
   const [ib_vol, setIbVol] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("/predict")
+    apiFetch("/predict")
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
@@ -58,7 +59,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("data/oprs")
+    apiFetch("data/oprs")
       .then(res => res.json())
       .then(data => {
         console.log("✅ API raw data:", data);   // 👈 先打印出来看看
@@ -73,7 +74,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("data/myor")
+    apiFetch("data/myor")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
@@ -87,7 +88,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("data/interbank_rates")
+    apiFetch("data/interbank_rates")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
@@ -101,7 +102,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("data/interbank_volumes")
+    apiFetch("data/interbank_volumes")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
