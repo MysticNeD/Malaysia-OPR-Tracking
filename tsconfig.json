@@ -14,6 +14,8 @@
     "skipLibCheck": true,
     "allowJs": true,
     "noUnusedLocals": false,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "module": "commonjs", // Ensure CommonJS for Vercel serverless functions
+    "moduleResolution": "node" // Required for Node.js resolution
   }
 }

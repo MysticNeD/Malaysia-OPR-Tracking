@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/**/*.cts": {
+    "api/**/*.ts": {
       "memory": 256,
       "maxDuration": 10
     }
