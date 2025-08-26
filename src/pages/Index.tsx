@@ -40,7 +40,7 @@ const Index = () => {
   const [ib_vol, setIbVol] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("/api/predict")
+    fetch("/predict")
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
@@ -58,7 +58,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("/api/data/oprs")
+    fetch("data/oprs")
       .then(res => res.json())
       .then(data => {
         console.log("✅ API raw data:", data);   // 👈 先打印出来看看
@@ -73,7 +73,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("/api/data/myor")
+    fetch("data/myor")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
@@ -87,7 +87,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("/api/data/interbank_rates")
+    fetch("data/interbank_rates")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
@@ -101,7 +101,7 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    fetch("/api/data/interbank_volumes")
+    fetch("data/interbank_volumes")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
