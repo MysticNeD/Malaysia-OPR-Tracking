@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  console.log("Vercel Function sees LOAD_DATA_KEY as:", process.env.LOAD_DATA_KEY);
   const RENDER_API_URL = "https://malaysia-opr-tracking.onrender.com/predict";
 
   try {
