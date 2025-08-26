@@ -145,5 +145,5 @@ def predict_next_opr(next_only: bool = True, api_key: str = Depends(verify_api_k
 # Serve static files for the frontend, assuming a "dist" directory
 # This is for hosting the entire app on a single server like Render or on Vercel
 # with a build script that creates a "dist" folder.
-app.mount("/", StaticFiles(directory="dist", html=True), name="static")
+# app.mount("/", StaticFiles(directory="dist", html=True), name="static")
 
