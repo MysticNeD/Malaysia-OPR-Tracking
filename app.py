@@ -126,29 +126,24 @@ def predict_opr(date_str):
 
 # Endpoint to get the next OPR prediction
 @app.get("/predict")
-def predict_next_opr(request: Request, next_only: bool = True, api_key: str = Depends(verify_api_key)):
+def predict_next_opr(api_key: str = Depends(verify_api_key)):
+    import json
+    from pathlib import Path
+
+    predictions_file = Path("data/predictions.json")
+    if not predictions_file.exists():
+        raise HTTPException(status_code=404, detail="Predictions file not found. Run main.py first.")
+
+    with open(predictions_file, "r", encoding="utf-8") as f:
+        predictions = json.load(f)
+
+    # 只返回下一次 OPR
     today = datetime.now().date()
-    upcoming = [d for d in OPR_DECISIONS if datetime.strptime(d, "%Y-%m-%d").date() >= today]
+    upcoming = [p for p in predictions if datetime.strptime(p["date"], "%Y-%m-%d").date() >= today]
+    if upcoming:
+        return [upcoming[0]]
+    return []
 
-    if next_only and upcoming:
-        upcoming = [upcoming[0]]  # 只返回下一次
-
-    results = []
-    for fd in upcoming:
-        fd_date = datetime.strptime(fd, "%Y-%m-%d").date()
-        last_opr = get_last_opr_before(today)
-
-        # 预测下一个 OPR movement
-        label, proba = predict_opr(fd_date)
-        proba = {k: float(v) for k, v in proba.items()}
-        results.append({
-            "date": fd,
-            "predicted_opr": label,
-            "probabilities": proba,
-            "lookback_start": last_opr
-        })
-
-    return results
 
 # Serve static files for the frontend, assuming a "dist" directory
 # This is for hosting the entire app on a single server like Render or on Vercel
