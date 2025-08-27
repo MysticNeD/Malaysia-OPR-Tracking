@@ -24,7 +24,7 @@ app = FastAPI(debug=os.getenv("DEBUG", "false").lower() == "true")
 print("LOAD_DATA_KEY:", API_KEY)
 
 # Define a function to verify the API key from the request header
-def verify_api_key(x_api_key: str = Header(None)):
+def verify_api_key(x_api_key: str = Header(None, convert_underscores=False)):
     """
     Verifies the API key provided in the 'x-api-key' header.
     Raises a 403 Forbidden error if the key is invalid.
@@ -122,7 +122,8 @@ def predict_opr(date_str):
 
 # Endpoint to get the next OPR prediction
 @app.get("/predict")
-def predict_next_opr(next_only: bool = True, api_key: str = Depends(verify_api_key)):
+def predict_next_opr(request: Request, next_only: bool = True, api_key: str = Depends(verify_api_key)):
+    print("REQUEST HEADERS:", request.headers)
     today = datetime.now().date()
     upcoming = [d for d in OPR_DECISIONS if datetime.strptime(d, "%Y-%m-%d").date() >= today]
 
