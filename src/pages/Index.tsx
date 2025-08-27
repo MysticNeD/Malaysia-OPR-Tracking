@@ -43,6 +43,7 @@ const Index = () => {
   useEffect(() => {
     apiFetch("predict")
       .then(data => {
+        console.log("Predict data:", data);
         if (Array.isArray(data) && data.length > 0) {
           const item = data[0];  // 取第一个预测对象
           setProbabilities({

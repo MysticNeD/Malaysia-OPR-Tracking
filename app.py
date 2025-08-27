@@ -139,6 +139,7 @@ def predict_next_opr(request: Request, next_only: bool = True, api_key: str = De
             "predicted_opr": label,
             "probabilities": proba
         })
+    print(results)
     return results
 
 # Serve static files for the frontend, assuming a "dist" directory
