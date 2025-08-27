@@ -24,13 +24,10 @@ app = FastAPI(debug=os.getenv("DEBUG", "false").lower() == "true")
 print("LOAD_DATA_KEY:", API_KEY)
 
 # Define a function to verify the API key from the request header
-def verify_api_key(x_api_key: str = Header(None, convert_underscores=False)):
-    """
-    Verifies the API key provided in the 'x-api-key' header.
-    Raises a 403 Forbidden error if the key is invalid.
-    """
+def verify_api_key(x_api_key: str = Header(None)):
     if x_api_key != API_KEY:
         raise HTTPException(status_code=403, detail="Forbidden")
+
 
 # Configure CORS (Cross-Origin Resource Sharing) middleware
 # This is crucial for allowing the frontend (on a different domain) to communicate with this backend
