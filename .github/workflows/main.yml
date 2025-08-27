@@ -42,13 +42,20 @@ jobs:
 
       - name: Commit and push predictions
         run: |
+          shopt -s globstar
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add -f data/**/*.csv data/**/*.json models/*.pkl
-          git commit -m "Daily update [skip ci]" || echo "No changes to commit"
-          git push
+          files=(data/**/*.csv data/**/*.json models/*.pkl)
+          if [ ${#files[@]} -gt 0 ]; then
+            git add -f "${files[@]}"
+            git commit -m "Daily update [skip ci]" || echo "No changes to commit"
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:main
+          else
+            echo "No files to add"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
 
 
 
