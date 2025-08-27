@@ -2,6 +2,9 @@
 const API_BASE_URL = import.meta.env.VITE_DATA_THE_API_ABCDE?.replace(/\/?$/, "/");
 const API_KEY = import.meta.env.VITE_LOAD_DATA_KEY;
 
+console.log("API_BASE_URL:", API_BASE_URL);
+console.log("API_KEY:", API_KEY);
+
 export async function apiFetch(path: string) {
   const res = await fetch(`${API_BASE_URL}${path}`, {
     headers: {
