@@ -12,9 +12,17 @@ export async function apiFetch(path: string) {
     },
   });
 
-  if (!res.ok) {
-    throw new Error(`API error ${res.status}: ${await res.text()}`);
+  let data;
+  try {
+    data = await res.json();
+  } catch {
+    throw new Error(`API returned non-JSON response (status ${res.status})`);
   }
 
-  return res.json();
+  if (!res.ok) {
+    // 明确抛出后端错误，而不是把对象丢给 .map()
+    throw new Error(data?.detail || `API error ${res.status}`);
+  }
+
+  return data;
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { apiFetch } from "@/utils/api";
 
 interface Prediction {
   date: string;
@@ -15,8 +16,7 @@ const PredictTable: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://malaysia-opr-tracking.onrender.com/predict")
-      .then((res) => res.json())
+    apiFetch("predict")
       .then((json) => {
         setData(json);
         setLoading(false);
