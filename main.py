@@ -3,12 +3,12 @@
 Run full pipeline for myopr-watch:
 1. Fetch latest BNM data
 2. Train model
-3. Predict future OPR decisions
+3. Predict next OPR movement based on today's data
 4. Save results
 """
 
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 import pandas as pd
 import json
 import sys
@@ -21,9 +21,9 @@ OUTPUT_DIR = (ROOT / "outputs").resolve()
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ------------------ 导入模块 ------------------
-from scripts.fetch_bnm import main as fetch_bnm_main  # 更新 opr/myor/interbank 数据
-from models.train import prepare_dataset  # 训练函数
-from models.predict import predict_opr, OPR_DECISIONS  # 预测函数
+from scripts.fetch_bnm import main as fetch_bnm_main
+from models.train import prepare_dataset
+from models.predict import predict_opr, generate_features, OPR_DECISIONS, _load_model
 
 # ------------------ 主流程 ------------------
 def main():
@@ -40,21 +40,38 @@ def main():
         print("[error] training failed:", e, file=sys.stderr)
         return
 
-    print("[info] Predicting next OPR decision dates...")
+    clf, _features = _load_model()
+
+    print("[info] Predicting next OPR decision probabilities...")
     today = datetime.now().date()
+
+    # 获取下一个 OPR 日期
     upcoming_dates = [d for d in OPR_DECISIONS if datetime.strptime(d, "%Y-%m-%d").date() >= today]
+    if not upcoming_dates:
+        print("[warning] No upcoming OPR decisions")
+        return
+
+    # 获取上一次 OPR 日期
+    past_oprs = [d for d in OPR_DECISIONS if datetime.strptime(d, "%Y-%m-%d").date() < today]
+    last_opr_date = datetime.strptime(max(past_oprs), "%Y-%m-%d").date() if past_oprs else today - timedelta(days=60)
+    lookback_days = (today - last_opr_date).days
 
     predictions = []
     for fd in upcoming_dates:
         try:
-            label, proba = predict_opr(fd)
-            proba = {k: float(v) for k, v in proba.items()}
+            # 用今天的数据生成特征，window 从 last OPR 到今天
+            X_pred = generate_features(pred_date=today, lookback_days=lookback_days)
+            label = clf.predict(X_pred)[0]
+            proba_values = clf.predict_proba(X_pred)[0]
+            proba = dict(zip(clf.classes_, proba_values))
+
             predictions.append({
                 "date": fd,
                 "predicted_opr": label,
                 **proba
             })
-            print(f"Date: {fd}, Predicted OPR: {label}, Probabilities: {proba}")
+
+            print(f"Next OPR date: {fd}, Predicted OPR: {label}, Probabilities: {proba}")
         except Exception as e:
             print(f"[error] failed to predict for {fd}: {e}", file=sys.stderr)
 
@@ -64,11 +81,12 @@ def main():
         pd.DataFrame(predictions).to_csv(out_csv, index=False, encoding="utf-8")
         print(f"[info] Saved predictions CSV: {out_csv}")
 
-    # 保存 JSON
-    out_json = DATA_DIR / "predictions.json"
-    with open(out_json, "w", encoding="utf-8") as f:
-        json.dump(predictions, f, ensure_ascii=False, indent=2)
-    print(f"[info] Saved predictions JSON: {out_json}")
+        # 保存 JSON
+        out_json = DATA_DIR / "predictions.json"
+        with open(out_json, "w", encoding="utf-8") as f:
+            json.dump(predictions, f, ensure_ascii=False, indent=2)
+        print(f"[info] Saved predictions JSON: {out_json}")
+
 
 if __name__ == "__main__":
     main()

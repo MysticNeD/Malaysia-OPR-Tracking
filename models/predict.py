@@ -20,7 +20,14 @@ warnings.filterwarnings("ignore")
 # ------------------------
 # Config
 # ------------------------
-OPR_DECISIONS = ["2025-09-04", "2025-11-06"]  # fixed future dates
+OPR_DECISIONS = [
+    "2025-01-01",
+    "2025-03-05",
+    "2025-05-07",
+    "2025-07-09",
+    "2025-09-11",
+    "2025-11-06",
+]
 today = datetime.now().date()
 OPR_DECISIONS = [d for d in OPR_DECISIONS if datetime.strptime(d, "%Y-%m-%d").date() >= today]
 
@@ -97,30 +104,30 @@ if interbank_vol is not None:
     interbank_vol = interbank_vol.dropna(subset=["date"]).reset_index(drop=True)
 
 # ------------------------
+# Helper: get last OPR date
+# ------------------------
+def get_last_opr_date(pred_date: date):
+    past_oprs = [datetime.strptime(d, "%Y-%m-%d").date() for d in OPR_DECISIONS if datetime.strptime(d, "%Y-%m-%d").date() < pred_date]
+    if past_oprs:
+        return past_oprs[-1]
+    return pred_date - timedelta(days=60)
+
+# ------------------------
 # Feature generator (Direction B)
 # ------------------------
-def generate_features(pred_date: date, lookback_days=None):
+def generate_features(pred_date: date):
     """
     Generate features for prediction using pred_date.
-    lookback_days: if None, use days until next OPR decision or default 60
+    Use data from last OPR to today
     """
-    # Determine lookback_days
-    if lookback_days is None and OPR_DECISIONS:
-        next_opr = min(datetime.strptime(d, "%Y-%m-%d").date() for d in OPR_DECISIONS)
-        lookback_days = (next_opr - pred_date).days
-        if lookback_days <= 0:
-            lookback_days = 60  # fallback
-        elif lookback_days > 60:
-            lookback_days = 60  # cap at 60
-    elif lookback_days is None:
-        lookback_days = 60
-
     feat = {"date": pred_date}
+
+    lb_start = get_last_opr_date(pred_date)
+    lb_end = datetime.now().date()
 
     # MYOR features
     if myor is not None:
-        lb_start = pred_date - timedelta(days=lookback_days)
-        window = myor[(myor["date"] > lb_start) & (myor["date"] <= pred_date)]
+        window = myor[(myor["date"] > lb_start) & (myor["date"] <= lb_end)]
         if not window.empty:
             feat["myor_mean_7d"] = window["myor"].mean()
             feat["myor_last"] = window["myor"].iloc[-1]
@@ -134,15 +141,14 @@ def generate_features(pred_date: date, lookback_days=None):
 
     # Interbank overnight
     if interbank is not None:
-        lb_start = pred_date - timedelta(days=lookback_days)
         ov = interbank[(interbank["tenor"].str.lower().str.contains("overnight", na=False)) &
-                       (interbank["date"] > lb_start) & (interbank["date"] <= pred_date)]
+                       (interbank["date"] > lb_start) & (interbank["date"] <= lb_end)]
         feat["overnight_mean_7d"] = ov["rate"].mean() if not ov.empty else 0.0
         feat["overnight_last"] = ov["rate"].iloc[-1] if not ov.empty else 0.0
 
         # 1-month
         m1 = interbank[(interbank["tenor"].str.contains("1_month|1 month|1_month", case=False, regex=True)) &
-                       (interbank["date"] > lb_start) & (interbank["date"] <= pred_date)]
+                       (interbank["date"] > lb_start) & (interbank["date"] <= lb_end)]
         feat["m1_mean_7d"] = m1["rate"].mean() if not m1.empty else 0.0
     else:
         feat["overnight_mean_7d"] = 0.0
@@ -151,8 +157,7 @@ def generate_features(pred_date: date, lookback_days=None):
 
     # Interbank volume
     if interbank_vol is not None:
-        lb_start = pred_date - timedelta(days=lookback_days)
-        vv = interbank_vol[(interbank_vol["date"] > lb_start) & (interbank_vol["date"] <= pred_date)]
+        vv = interbank_vol[(interbank_vol["date"] > lb_start) & (interbank_vol["date"] <= lb_end)]
         feat["vol_mean_7d"] = vv["volume"].mean() if not vv.empty else 0.0
         feat["vol_sum_7d"] = vv["volume"].sum() if not vv.empty else 0.0
     else:
@@ -160,7 +165,7 @@ def generate_features(pred_date: date, lookback_days=None):
         feat["vol_sum_7d"] = 0.0
 
     # Spread
-    feat["myor_minus_opr"] = 0.0  # since we don't know next OPR
+    feat["myor_minus_opr"] = 0.0  # unknown next OPR
 
     # Diff features
     feat["myor_diff"] = feat["myor_last"] - feat["myor_mean_7d"]
@@ -182,13 +187,12 @@ def predict_opr(pred_date):
     clf, _ = _load_model()
     if isinstance(pred_date, str):
         pred_date_dt = datetime.strptime(pred_date, "%Y-%m-%d").date()
-    else:  # assume datetime.date
+    else:
         pred_date_dt = pred_date
     X_pred = generate_features(pred_date_dt)
     label = clf.predict(X_pred)[0]
     proba = clf.predict_proba(X_pred)[0]
     return label, dict(zip(clf.classes_, proba))
-
 
 # ------------------------
 # Main
@@ -199,8 +203,8 @@ if __name__ == "__main__":
     if not OPR_DECISIONS:
         print("[warning] No future OPR decision dates found.")
     else:
-        fd = OPR_DECISIONS[0]  # next OPR decision
-        label, proba = predict_opr(today)
-        proba = {k: float(v) for k, v in proba.items()}
-        print(f"Today: {today}, Next OPR date: {fd}")
-        print(f"Predicted OPR movement: {label.upper()}, Probabilities: {proba}")
+        for fd in OPR_DECISIONS:
+            label, proba = predict_opr(fd)
+            proba = {k: float(v) for k, v in proba.items()}
+            print(f"Today: {today}, Next OPR date: {fd}")
+            print(f"Predicted OPR movement: {label.upper()}, Probabilities: {proba}")

@@ -13,6 +13,7 @@ from config import settings
 import pandas as pd
 import numpy as np
 import os
+from models.predict import predict_opr, OPR_DECISIONS
 
 # Define the API key for authentication
 API_KEY = os.getenv("LOAD_DATA_KEY")
@@ -53,7 +54,10 @@ app.add_middleware(
 def health():
     return Response(content='{"ok": true}', media_type="application/json")
 
-
+def get_last_opr_before(date: datetime.date):
+    """返回给定日期之前的最近一次 OPR 日期"""
+    past_oprs = [d for d in OPR_DECISIONS if datetime.strptime(d, "%Y-%m-%d").date() <= date]
+    return max(past_oprs) if past_oprs else None
 
 # Utility function to read CSV data into a JSON-like format
 def read_csv_as_json(path: str):
@@ -123,23 +127,27 @@ def predict_opr(date_str):
 # Endpoint to get the next OPR prediction
 @app.get("/predict")
 def predict_next_opr(request: Request, next_only: bool = True, api_key: str = Depends(verify_api_key)):
-    print("REQUEST HEADERS:", request.headers)
     today = datetime.now().date()
     upcoming = [d for d in OPR_DECISIONS if datetime.strptime(d, "%Y-%m-%d").date() >= today]
 
     if next_only and upcoming:
-        upcoming = [upcoming[0]]
+        upcoming = [upcoming[0]]  # 只返回下一次
 
     results = []
     for fd in upcoming:
-        label, proba = predict_opr(fd)
+        fd_date = datetime.strptime(fd, "%Y-%m-%d").date()
+        last_opr = get_last_opr_before(today)
+
+        # 预测下一个 OPR movement
+        label, proba = predict_opr(fd_date)
         proba = {k: float(v) for k, v in proba.items()}
         results.append({
             "date": fd,
             "predicted_opr": label,
-            "probabilities": proba
+            "probabilities": proba,
+            "lookback_start": last_opr
         })
-    print(results)
+
     return results
 
 # Serve static files for the frontend, assuming a "dist" directory
