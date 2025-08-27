@@ -38,10 +38,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
                    "https://malaysia-opr-tracking.vercel.app",
-                   "https://malaysia-opr-tracking.onrender.com",
-                   "13.228.225.19",
-                    "18.142.128.26",
-                    "54.254.162.s138"],
+                   "https://malaysia-opr-tracking.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
