@@ -96,11 +96,11 @@ def get_interbank_volumes(api_key: str = Depends(verify_api_key)):
 # This part of the code needs to be adapted from your original project's models/predict.py
 # For now, it's a simple placeholder
 OPR_DECISIONS = [
-    "2025-01-01",
-    "2025-03-05",
-    "2025-05-07",
+    "2025-01-22",
+    "2025-03-06",
+    "2025-05-08",
     "2025-07-09",
-    "2025-09-11",
+    "2025-09-04",
     "2025-11-06",
 ]
 

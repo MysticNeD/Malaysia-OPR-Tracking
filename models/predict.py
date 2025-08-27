@@ -21,11 +21,11 @@ warnings.filterwarnings("ignore")
 # Config
 # ------------------------
 OPR_DECISIONS = [
-    "2025-01-01",
-    "2025-03-05",
-    "2025-05-07",
+    "2025-01-22",
+    "2025-03-06",
+    "2025-05-08",
     "2025-07-09",
-    "2025-09-11",
+    "2025-09-04",
     "2025-11-06",
 ]
 today = datetime.now().date()
@@ -115,7 +115,7 @@ def get_last_opr_date(pred_date: date):
 # ------------------------
 # Feature generator (Direction B)
 # ------------------------
-def generate_features(pred_date: date):
+def generate_features(pred_date: date, lookback_days=None):
     """
     Generate features for prediction using pred_date.
     Use data from last OPR to today
@@ -183,13 +183,13 @@ def generate_features(pred_date: date):
 # ------------------------
 # Predict
 # ------------------------
-def predict_opr(pred_date):
+def predict_opr(pred_date, lookback_days=None):
     clf, _ = _load_model()
     if isinstance(pred_date, str):
         pred_date_dt = datetime.strptime(pred_date, "%Y-%m-%d").date()
     else:
         pred_date_dt = pred_date
-    X_pred = generate_features(pred_date_dt)
+    X_pred = generate_features(pred_date_dt, lookback_days=lookback_days)
     label = clf.predict(X_pred)[0]
     proba = clf.predict_proba(X_pred)[0]
     return label, dict(zip(clf.classes_, proba))
