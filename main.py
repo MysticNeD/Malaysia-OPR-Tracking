@@ -8,7 +8,7 @@ Run full pipeline for myopr-watch:
 """
 
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime
 import pandas as pd
 import json
 import sys
@@ -23,16 +23,17 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 # ------------------ 导入模块 ------------------
 from scripts.fetch_bnm import main as fetch_bnm_main
 from models.train import prepare_dataset
-from models.predict import predict_opr, generate_features, OPR_DECISIONS, _load_model
+from models.predict import predict_opr, OPR_DECISIONS, _load_model
 
 # ------------------ 主流程 ------------------
 def main():
+    """
     print("[info] Fetching latest BNM data...")
     try:
         fetch_bnm_main()
     except Exception as e:
         print("[error] fetch_bnm failed:", e, file=sys.stderr)
-
+    """
     print("[info] Training model...")
     try:
         model_bundle, prepared = prepare_dataset()
@@ -51,24 +52,17 @@ def main():
         print("[warning] No upcoming OPR decisions")
         return
 
-    # 获取上一次 OPR 日期
-    past_oprs = [d for d in OPR_DECISIONS if datetime.strptime(d, "%Y-%m-%d").date() < today]
-    last_opr_date = datetime.strptime(max(past_oprs), "%Y-%m-%d").date() if past_oprs else today - timedelta(days=60)
-    lookback_days = (today - last_opr_date).days
-
     predictions = []
     for fd in upcoming_dates:
         try:
-            # 用今天的数据生成特征，window 从 last OPR 到今天
-            X_pred = generate_features(pred_date=today, lookback_days=lookback_days)
-            label = clf.predict(X_pred)[0]
-            proba_values = clf.predict_proba(X_pred)[0]
-            proba = dict(zip(clf.classes_, proba_values))
+            # 直接调用 models/predict.py 的 predict_opr()
+            label, proba = predict_opr(fd)
+            proba = {k: float(v) for k, v in proba.items()}
 
             predictions.append({
                 "date": fd,
                 "predicted_opr": label,
-                **proba
+                "probabilities": proba
             })
 
             print(f"Next OPR date: {fd}, Predicted OPR: {label}, Probabilities: {proba}")
@@ -78,7 +72,13 @@ def main():
     # 保存 CSV
     if predictions:
         out_csv = DATA_DIR / "predictions.csv"
-        pd.DataFrame(predictions).to_csv(out_csv, index=False, encoding="utf-8")
+        pd.DataFrame([
+            {
+                "date": p["date"],
+                "predicted_opr": p["predicted_opr"],
+                **p["probabilities"]
+            } for p in predictions
+        ]).to_csv(out_csv, index=False, encoding="utf-8")
         print(f"[info] Saved predictions CSV: {out_csv}")
 
         # 保存 JSON
