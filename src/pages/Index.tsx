@@ -41,26 +41,24 @@ const Index = () => {
   const [ib_vol, setIbVol] = useState<any[]>([]);
 
   useEffect(() => {
-    apiFetch("/predict")
-      .then(res => res.json())
+    apiFetch("predict")
       .then(data => {
         if (data && data.length > 0) {
           const item = data[0];
           setProbabilities({
-            increase: item.probabilities.up * 100,
-            hold: item.probabilities.same * 100,
-            decrease: item.probabilities.down * 100,
+            increase: item.probabilities.increase * 100,
+            hold: item.probabilities.hold * 100,
+            decrease: item.probabilities.decrease * 100,
           });
-
           setCurrentOPR(item.predicted_opr + "%");
         }
       })
-      .catch(err => console.error("API fetch error:", err));
+      .catch(err => console.error("API fetch error (predict):", err));
   }, []);
+
 
   useEffect(() => {
     apiFetch("data/oprs")
-      .then(res => res.json())
       .then(data => {
         console.log("✅ API raw data:", data);   // 👈 先打印出来看看
         if (Array.isArray(data) && data.length > 0) {
@@ -75,7 +73,6 @@ const Index = () => {
 
   useEffect(() => {
     apiFetch("data/myor")
-      .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
           console.log("👉 Latest OPR:", data[data.length - 1]); // 打印最后一个
@@ -89,7 +86,6 @@ const Index = () => {
 
   useEffect(() => {
     apiFetch("data/interbank_rates")
-      .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
           console.log("👉 Latest IBR:", data[data.length - 1]); // 打印最后一个
@@ -103,7 +99,6 @@ const Index = () => {
 
   useEffect(() => {
     apiFetch("data/interbank_volumes")
-      .then(res => res.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
           console.log("👉 Latest IBV:", data[data.length - 1]); // 打印最后一个
