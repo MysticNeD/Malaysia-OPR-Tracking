@@ -30,9 +30,9 @@ function escapeHtml(unsafe: string) {
 const Index = () => {
   // 状态：用来存后端数据
   const [probabilities, setProbabilities] = useState({
-    increase: 0,
-    decrease: 0,
-    hold: 0
+    up: 0,
+    down: 0,
+    same: 0
   });
   const [currentOPR, setCurrentOPR] = useState<string>("--");
   const [oprs, setOprs] = useState<any[]>([]);
@@ -47,9 +47,9 @@ const Index = () => {
         if (Array.isArray(data) && data.length > 0) {
           const item = data[0];  // 取第一个预测对象
           setProbabilities({
-            increase: item.probabilities.increase * 100,
-            hold: item.probabilities.hold * 100,
-            decrease: item.probabilities.decrease * 100,
+            up: item.probabilities.up * 100,
+            same: item.probabilities.same * 100,
+            down: item.probabilities.down * 100,
           });
           setCurrentOPR(item.predicted_opr + "%");
         } else {
@@ -216,19 +216,19 @@ interface ChartDataItem {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <ProbabilityCard
             type="increase"
-            probability={probabilities.increase}
+            probability={probabilities.up}
             title="Rate Increase"
             change="+0.25% Expected"
           />
           <ProbabilityCard
             type="hold"
-            probability={probabilities.hold}
+            probability={probabilities.same}
             title="Rate Hold"
             change="Maintain Current"
           />
           <ProbabilityCard
             type="decrease"
-            probability={probabilities.decrease}
+            probability={probabilities.down}
             title="Rate Decrease"
             change="-0.25% Expected"
           />

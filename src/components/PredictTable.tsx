@@ -5,9 +5,9 @@ interface Prediction {
   date: string;
   predicted_opr: string;
   probabilities: {
-    increase: number;
-    decrease: number;
-    hold: number;
+    up: number;
+    down: number;
+    same: number;
   };
 }
 
@@ -49,9 +49,9 @@ const PredictTable: React.FC = () => {
             <tr key={idx} className="border-t">
               <td className="px-4 py-2">{item.date}</td>
               <td className="px-4 py-2">{item.predicted_opr}</td>
-              <td className="px-4 py-2">{(item.probabilities.decrease * 100).toFixed(2)}%</td>
-              <td className="px-4 py-2">{(item.probabilities.hold * 100).toFixed(2)}%</td>
-              <td className="px-4 py-2">{(item.probabilities.increase * 100).toFixed(2)}%</td>
+              <td className="px-4 py-2">{(item.probabilities.down * 100).toFixed(2)}%</td>
+              <td className="px-4 py-2">{(item.probabilities.same * 100).toFixed(2)}%</td>
+              <td className="px-4 py-2">{(item.probabilities.up * 100).toFixed(2)}%</td>
 
             </tr>
           ))}
