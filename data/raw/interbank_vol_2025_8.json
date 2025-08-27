@@ -159,11 +159,41 @@
       "6_month": null,
       "1_year": null,
       "other": 1212.73
+    },
+    {
+      "date": "2025-08-25",
+      "overnight": 6351.42,
+      "1_week": null,
+      "1_month": 205.49,
+      "3_month": 1040,
+      "6_month": null,
+      "1_year": null,
+      "other": 750
+    },
+    {
+      "date": "2025-08-26",
+      "overnight": 4393.91,
+      "1_week": 600,
+      "1_month": null,
+      "3_month": 150,
+      "6_month": null,
+      "1_year": null,
+      "other": 650
+    },
+    {
+      "date": "2025-08-27",
+      "overnight": 6683.25,
+      "1_week": 300,
+      "1_month": 50,
+      "3_month": 1815,
+      "6_month": null,
+      "1_year": null,
+      "other": 1910
     }
   ],
   "meta": {
     "product": "interbank",
-    "last_updated": "2025-08-22 23:01:24",
+    "last_updated": "2025-08-27 19:26:35",
     "total_result": 0
   }
 }

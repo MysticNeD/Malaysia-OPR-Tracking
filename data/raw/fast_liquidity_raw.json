@@ -1,44 +1,44 @@
 {
   "data": [
     {
-      "liq_id": "202500000661",
-      "liq_last_upd_date": "2025-08-25",
-      "liq_last_upd_time": "10:30:56",
-      "liq_desc": "2nd Liquidity Position as at 25 August 2025 (RM mil)",
+      "liq_id": "202500000668",
+      "liq_last_upd_date": "2025-08-26",
+      "liq_last_upd_time": "15:55:48",
+      "liq_desc": "4th Liquidity Position as at 26 August 2025 (RM mil)",
       "prin": "Conventional",
-      "agr_opn_bal": "2589.50",
-      "bnm_mm_repo_mat": "19932.70",
-      "bnm_mm_repo_ten": "0.00",
-      "oth_bnm_mkt_non_act": "429.30",
-      "gov_opr": "-84.30",
-      "bnm_gov_sec_red": "0.00",
+      "agr_opn_bal": "1051.00",
+      "bnm_mm_repo_mat": "23656.70",
+      "bnm_mm_repo_ten": "3274.30",
+      "oth_bnm_mkt_non_act": "-2525.90",
+      "gov_opr": "-169.60",
+      "bnm_gov_sec_red": "-1000.00",
       "cpn_div_pay": "0.00",
-      "sta_rsv": "130.00",
-      "net_pay_con_isl": "2916.40",
-      "gra_tot": "25913.60",
-      "liq_rem": ""
+      "sta_rsv": "785.70",
+      "net_pay_con_isl": "-1371.00",
+      "gra_tot": "23701.20",
+      "liq_rem": "OPERATIONS:\r\n\r\n\r\nCONVENTIONAL MM TENDER\r\nRM23,700 mil for 1 day: COMPETITIVE BORROWING 27/08/2025\r\n\r\n\r\nMURABAHAH MM TENDER\r\nRM20,600 mil for 1 day: COMPETITIVE BORROWING 27/08/2025\r\n\r\n\r\nAll offers must be submitted before 1630hrs"
     },
     {
-      "liq_id": "202500000661",
-      "liq_last_upd_date": "2025-08-25",
-      "liq_last_upd_time": "10:30:56",
-      "liq_desc": "2nd Liquidity Position as at 25 August 2025 (RM mil)",
+      "liq_id": "202500000668",
+      "liq_last_upd_date": "2025-08-26",
+      "liq_last_upd_time": "15:55:48",
+      "liq_desc": "4th Liquidity Position as at 26 August 2025 (RM mil)",
       "prin": "Islamic",
-      "agr_opn_bal": "462.60",
-      "bnm_mm_repo_mat": "22350.20",
+      "agr_opn_bal": "364.90",
+      "bnm_mm_repo_mat": "20726.60",
       "bnm_mm_repo_ten": "0.00",
-      "oth_bnm_mkt_non_act": "0.00",
-      "gov_opr": "-1475.70",
+      "oth_bnm_mkt_non_act": "-981.50",
+      "gov_opr": "-939.80",
       "bnm_gov_sec_red": "0.00",
       "cpn_div_pay": "0.00",
-      "sta_rsv": "5.00",
-      "net_pay_con_isl": "-2916.40",
-      "gra_tot": "18425.70",
-      "liq_rem": ""
+      "sta_rsv": "58.50",
+      "net_pay_con_isl": "1371.00",
+      "gra_tot": "20599.70",
+      "liq_rem": "OPERATIONS:\r\n\r\n\r\nCONVENTIONAL MM TENDER\r\nRM23,700 mil for 1 day: COMPETITIVE BORROWING 27/08/2025\r\n\r\n\r\nMURABAHAH MM TENDER\r\nRM20,600 mil for 1 day: COMPETITIVE BORROWING 27/08/2025\r\n\r\n\r\nAll offers must be submitted before 1630hrs"
     }
   ],
   "meta": {
-    "last_updated": "2025-08-25 13:00:34",
+    "last_updated": "2025-08-26 20:00:26",
     "total_result": 2
   }
 }
