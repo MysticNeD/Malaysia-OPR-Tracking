@@ -24,10 +24,11 @@ app = FastAPI(debug=os.getenv("DEBUG", "false").lower() == "true")
 print("LOAD_DATA_KEY:", API_KEY)
 
 # Define a function to verify the API key from the request header
-def verify_api_key(x_api_key: str = Header(None)):
+def verify_api_key(x_api_key: str = Header(None), request: Request = None):
+    if request.method == "OPTIONS":
+        return
     if x_api_key != API_KEY:
         raise HTTPException(status_code=403, detail="Forbidden")
-
 
 # Configure CORS (Cross-Origin Resource Sharing) middleware
 # This is crucial for allowing the frontend (on a different domain) to communicate with this backend
@@ -51,6 +52,8 @@ app.add_middleware(
 @app.head("/health")
 def health():
     return Response(content='{"ok": true}', media_type="application/json")
+
+
 
 # Utility function to read CSV data into a JSON-like format
 def read_csv_as_json(path: str):

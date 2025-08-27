@@ -43,13 +43,16 @@ const Index = () => {
   useEffect(() => {
     apiFetch("predict")
       .then(data => {
-        if (data) {  // data 是对象
+        if (Array.isArray(data) && data.length > 0) {
+          const item = data[0];  // 取第一个预测对象
           setProbabilities({
-            increase: data.probabilities.increase * 100,
-            hold: data.probabilities.hold * 100,
-            decrease: data.probabilities.decrease * 100,
+            increase: item.probabilities.increase * 100,
+            hold: item.probabilities.hold * 100,
+            decrease: item.probabilities.decrease * 100,
           });
-          setCurrentOPR(data.predicted_opr + "%");
+          setCurrentOPR(item.predicted_opr + "%");
+        } else {
+          console.warn("Predict API returned empty array or invalid data:", data);
         }
       })
       .catch(err => console.error("API fetch error (predict):", err));
