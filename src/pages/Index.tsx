@@ -201,8 +201,8 @@ interface ChartDataItem {
           </p>
 
           <p className="text-sm text-muted-foreground max-w-2xl mx-auto mt-4">
-            Note: If the data are not showing up, please wait for a minute to load the data. If the problem persists, please reload the page and 
-            the data should be showing up. (Sorry because the backend server is free and will sleep after a period of inactivity 🥲.)
+            Note: If the data are not showing up, please wait for a few minutes and reload the page to load the data. If the problem persists, please on the link: https://malaysia-opr-tracking.onrender.com/ 
+            and wait for render to load application. When it is loaded, return to this website. (Sorry because the backend server is free and will sleep after a period of inactivity 🥲.)
           </p>
 
         </div>
