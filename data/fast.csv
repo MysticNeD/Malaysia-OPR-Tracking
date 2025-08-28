@@ -1,25 +1,29 @@
 liq_id,date,liq_last_upd_time,liq_desc,prin,agr_opn_bal,bnm_mm_repo_mat,bnm_mm_repo_ten,oth_bnm_mkt_non_act,gov_opr,bnm_gov_sec_red,cpn_div_pay,sta_rsv,net_pay_con_isl,gra_tot,liq_rem
-202500000672,2025-08-27,15:54:14,4th Liquidity Position as at 27 August 2025 (RM mil),Conventional,1295.20,21622.80,2810.60,-709.30,-87.70,0.00,0.00,388.80,1080.00,26400.40,"OPERATIONS:
+202500000676,2025-08-28,15:56:57,4th Liquidity Position as at 28 August 2025 (RM mil),Conventional,1265.80,23568.50,3343.20,-3225.50,-821.90,0.00,0.00,577.50,-2407.40,22300.20,"OPERATIONS:
+
+BNM revised Murabahah overnight tender from RM20.5 billion to RM20.8 billion.
 
 
 CONVENTIONAL MM TENDER
-RM26,400 mil for 1 day: COMPETITIVE BORROWING 28/08/2025
+RM22,300 mil for 1 day: COMPETITIVE BORROWING 29/08/2025
 
 
 MURABAHAH MM TENDER
-RM20,600 mil for 1 day: COMPETITIVE BORROWING 28/08/2025
+RM20,800 mil for 1 day: COMPETITIVE BORROWING 29/08/2025
 
 
 All offers must be submitted before 1630hrs"
-202500000672,2025-08-27,15:54:14,4th Liquidity Position as at 27 August 2025 (RM mil),Islamic,385.20,20242.50,300.50,-1480.20,2180.60,0.00,0.00,51.00,-1080.00,20599.60,"OPERATIONS:
+202500000676,2025-08-28,15:56:57,4th Liquidity Position as at 28 August 2025 (RM mil),Islamic,360.50,20474.30,0.00,-2050.30,-276.90,0.00,0.00,-115.30,2407.40,20799.70,"OPERATIONS:
+
+BNM revised Murabahah overnight tender from RM20.5 billion to RM20.8 billion.
 
 
 CONVENTIONAL MM TENDER
-RM26,400 mil for 1 day: COMPETITIVE BORROWING 28/08/2025
+RM22,300 mil for 1 day: COMPETITIVE BORROWING 29/08/2025
 
 
 MURABAHAH MM TENDER
-RM20,600 mil for 1 day: COMPETITIVE BORROWING 28/08/2025
+RM20,800 mil for 1 day: COMPETITIVE BORROWING 29/08/2025
 
 
 All offers must be submitted before 1630hrs"
