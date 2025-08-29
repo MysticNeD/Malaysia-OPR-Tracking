@@ -1,44 +1,44 @@
 {
   "data": [
     {
-      "liq_id": "202500000676",
-      "liq_last_upd_date": "2025-08-28",
-      "liq_last_upd_time": "15:56:57",
-      "liq_desc": "4th Liquidity Position as at 28 August 2025 (RM mil)",
+      "liq_id": "202500000680",
+      "liq_last_upd_date": "2025-08-29",
+      "liq_last_upd_time": "15:59:03",
+      "liq_desc": "4th Liquidity Position as at 29 August 2025 (RM mil)",
       "prin": "Conventional",
-      "agr_opn_bal": "1265.80",
-      "bnm_mm_repo_mat": "23568.50",
-      "bnm_mm_repo_ten": "3343.20",
-      "oth_bnm_mkt_non_act": "-3225.50",
-      "gov_opr": "-821.90",
+      "agr_opn_bal": "1326.70",
+      "bnm_mm_repo_mat": "19523.60",
+      "bnm_mm_repo_ten": "4999.80",
+      "oth_bnm_mkt_non_act": "-3615.20",
+      "gov_opr": "-91.20",
       "bnm_gov_sec_red": "0.00",
       "cpn_div_pay": "0.00",
-      "sta_rsv": "577.50",
-      "net_pay_con_isl": "-2407.40",
-      "gra_tot": "22300.20",
-      "liq_rem": "OPERATIONS:\r\n\r\nBNM revised Murabahah overnight tender from RM20.5 billion to RM20.8 billion.\r\n\r\n\r\nCONVENTIONAL MM TENDER\r\nRM22,300 mil for 1 day: COMPETITIVE BORROWING 29/08/2025\r\n\r\n\r\nMURABAHAH MM TENDER\r\nRM20,800 mil for 1 day: COMPETITIVE BORROWING 29/08/2025\r\n\r\n\r\nAll offers must be submitted before 1630hrs"
+      "sta_rsv": "859.60",
+      "net_pay_con_isl": "1396.90",
+      "gra_tot": "24400.20",
+      "liq_rem": "OPERATIONS:\r\n\r\n\r\nCONVENTIONAL MM TENDER\r\nRM24,400 mil for 4 days: COMPETITIVE BORROWING 2/09/2025\r\n\r\n\r\nMURABAHAH MM TENDER\r\nRM15,600 mil for 4 days: COMPETITIVE BORROWING 2/09/2025\r\n\r\n\r\nAll offers must be submitted before 1630hrs"
     },
     {
-      "liq_id": "202500000676",
-      "liq_last_upd_date": "2025-08-28",
-      "liq_last_upd_time": "15:56:57",
-      "liq_desc": "4th Liquidity Position as at 28 August 2025 (RM mil)",
+      "liq_id": "202500000680",
+      "liq_last_upd_date": "2025-08-29",
+      "liq_last_upd_time": "15:59:03",
+      "liq_desc": "4th Liquidity Position as at 29 August 2025 (RM mil)",
       "prin": "Islamic",
-      "agr_opn_bal": "360.50",
-      "bnm_mm_repo_mat": "20474.30",
+      "agr_opn_bal": "404.10",
+      "bnm_mm_repo_mat": "20999.60",
       "bnm_mm_repo_ten": "0.00",
-      "oth_bnm_mkt_non_act": "-2050.30",
-      "gov_opr": "-276.90",
-      "bnm_gov_sec_red": "0.00",
+      "oth_bnm_mkt_non_act": "-3615.20",
+      "gov_opr": "4205.40",
+      "bnm_gov_sec_red": "-5000.00",
       "cpn_div_pay": "0.00",
-      "sta_rsv": "-115.30",
-      "net_pay_con_isl": "2407.40",
-      "gra_tot": "20799.70",
-      "liq_rem": "OPERATIONS:\r\n\r\nBNM revised Murabahah overnight tender from RM20.5 billion to RM20.8 billion.\r\n\r\n\r\nCONVENTIONAL MM TENDER\r\nRM22,300 mil for 1 day: COMPETITIVE BORROWING 29/08/2025\r\n\r\n\r\nMURABAHAH MM TENDER\r\nRM20,800 mil for 1 day: COMPETITIVE BORROWING 29/08/2025\r\n\r\n\r\nAll offers must be submitted before 1630hrs"
+      "sta_rsv": "3.00",
+      "net_pay_con_isl": "-1396.00",
+      "gra_tot": "15600.90",
+      "liq_rem": "OPERATIONS:\r\n\r\n\r\nCONVENTIONAL MM TENDER\r\nRM24,400 mil for 4 days: COMPETITIVE BORROWING 2/09/2025\r\n\r\n\r\nMURABAHAH MM TENDER\r\nRM15,600 mil for 4 days: COMPETITIVE BORROWING 2/09/2025\r\n\r\n\r\nAll offers must be submitted before 1630hrs"
     }
   ],
   "meta": {
-    "last_updated": "2025-08-28 20:00:28",
+    "last_updated": "2025-08-29 20:00:23",
     "total_result": 2
   }
 }

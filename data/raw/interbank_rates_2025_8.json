@@ -179,11 +179,20 @@
       "3_month": 3.19,
       "6_month": null,
       "1_year": null
+    },
+    {
+      "date": "2025-08-29",
+      "overnight": 2.78,
+      "1_week": null,
+      "1_month": 3,
+      "3_month": 3.19,
+      "6_month": null,
+      "1_year": null
     }
   ],
   "meta": {
     "product": "interbank",
-    "last_updated": "2025-08-28 23:01:57",
-    "total_result": 20
+    "last_updated": "2025-08-29 23:01:26",
+    "total_result": 21
   }
 }
